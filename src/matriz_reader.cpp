@@ -67,3 +67,5 @@ std::pair<int, int> matrixReader::getPosicaoInicial() const {
 const std::vector<std::vector<char>>& matrixReader::getMatriz() const {
     return matriz;
 }
+
+//teste
