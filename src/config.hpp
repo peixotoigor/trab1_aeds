@@ -12,6 +12,6 @@ enum direcoesVento {
     ABAIXO = 8
 };
 
-const int VENTO_DIRECAO = SEM_VENTO;
+const int VENTO_DIRECAO = SEM_VENTO; // ESQUERDA | DIREITA;
 
 #endif //CONFIG_HPP
