@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-const int MAX_ITERACOES =  1000;
+const int MAX_ITERACOES =  10;
 const bool VENTO_ATIVO = true;
 
 enum direcoesVento {
