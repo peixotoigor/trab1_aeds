@@ -131,28 +131,44 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 
 ## Estutura Geral do Projeto
 ```markdown
-/SimuladorFloresta
-│
-├── main.cpp                  // Apenas chama a função executarSimulacao()
-├── config.hpp                // Constantes globais e configurações da simulação
-│
-├── Simulador.hpp             // Declara a função que gerencia a simulação completa
-├── Simulador.cpp             // Implementa a função executarSimulacao()
-│
-├── leitorMatriz.hpp          // Declara a classe para leitura do arquivo
-├── leitorMatriz.cpp          // Implementa a leitura e armazenamento dos dados
-│
-├── Fogo.hpp                  // Declara a classe Fogo (propagação do incêndio)
-├── Fogo.cpp                  // Implementa a propagação do fogo usando diretamente a matriz
-│
-├── Animal.hpp                // Declara a classe Animal (movimentação do animal)
-├── Animal.cpp                // Implementa a movimentação e as regras do animal
-│
-├── Relatorio.hpp             // Declara a classe para gerar relatório da simulação
-├── Relatorio.cpp             // Implementa a geração do relatório
-│
-└── entrada.txt               // Arquivo de entrada contendo a matriz e dados iniciais
- ```
+trab1_aeds/
+├── Makefile                # Script para compilar o projeto (build automático)
+├── README.md               # Descrição geral do projeto e instruções de uso
+├── build/                  # Diretório para arquivos binários/compilados
+│   └── app                 # Executável principal gerado pela compilação
+├── data/                   # Arquivos de dados de entrada e saída
+│   ├── geradorMatriz.py    # Script Python para gerar matrizes de teste
+│   ├── input.dat           # Arquivo de entrada padrão para a simulação
+│   ├── matriz.dat          # Matriz gerada pelo script Python
+│   ├── log.dat             # Log de execução da simulação
+│   └── saida.dat           # Saída final da simulação (resultados)
+├── include/                # Arquivos de cabeçalho (headers) do projeto
+│   ├── Simulador.hpp           # Declaração da classe/função principal da simulação
+│   ├── config.hpp              # Configurações e constantes globais
+│   ├── conferirFogo.hpp        # Funções para checar o fogo na matriz
+│   ├── leitorMatriz.hpp        # Leitura de arquivos de matriz
+│   ├── matriz_reader.hpp       # Alternativa para leitura de matriz
+│   ├── melhorMovimento.hpp     # Lógica de movimentação do animal
+│   ├── numAleatorio.hpp        # Funções para geração de números aleatórios
+│   ├── propagacaoFogo.hpp      # Lógica de propagação do fogo
+│   ├── relatorio.hpp           # Funções para geração de relatórios
+│   └── umidade.hpp             # Funções relacionadas à umidade/água
+├── src/                    # Código-fonte principal do projeto
+│   ├── Simulador.cpp           # Implementação da simulação principal
+│   ├── conferirFogo.cpp        # Implementação das funções de fogo
+│   ├── leitorMatriz.cpp        # Implementação da leitura de matriz
+│   ├── main.cpp                # Função principal (main)
+│   ├── matriz_reader.cpp       # Alternativa para leitura de matriz
+│   ├── melhorMovimento.cpp     # Implementação do movimento do animal
+│   ├── numAleatorio.cpp        # Implementação dos números aleatórios
+│   ├── propagacaoFogo.cpp      # Implementação da propagação do fogo
+│   ├── relatorio.cpp           # Implementação dos relatórios
+│   ├── umidade.cpp             # Implementação da lógica de umidade
+│   └── programa                # (Opcional) Executável/teste auxiliar
+└── .vscode/                # Configurações do Visual Studio Code
+    └── settings.json           # Configurações específicas do projeto
+```
+
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
 [<img loading="lazy" src="https://avatars.githubusercontent.com/u/106671313" width=115><br><sub>Igor Peixoto</sub>](https://github.com/peixotoigor)
