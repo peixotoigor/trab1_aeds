@@ -15,6 +15,8 @@
 
 ## Tópicos 
 
+:small_blue_diamond: [Introdução](#Introduçao)
+
 :small_blue_diamond: [Descrição do projeto](#descrição-do-projeto)
 
 :small_blue_diamond: [Ambiente de Criação](#Ambiente-de-criacao)
@@ -32,6 +34,13 @@
 :small_blue_diamond: [Licença](#Licença)
 
 
+## :page_with_curl: Introdução
+<p align="justify">
+Incêndios florestais e urbanos são fenômenos que trazem consigo graves consequências ambientais, sociais e econômicas. A medida de como um incêndio se espalha, conhecida como taxa de propagação, é fundamental para prever o comportamento do fogo e implementar as respostas adequadas. Essa taxa pode ser afetada por uma variedade de fatores, incluindo condições climáticas, tipo de vegetação, umidade do solo, e características do terreno.
+  
+Além da destruição imediata, as consequências de um incêndio vão além do impacto ambiental, afetando a saúde pública através da qualidade do ar, a fauna e a flora locais, e até mesmo as economias locais, que dependem desses ecossistemas. A modelagem da taxa de propagação é, portanto, uma ferramenta vital e deve ser integrada em planos de manejo e resposta a emergências. Essa abordagem permite a identificação de áreas vulneráveis e a aplicação de medidas proativas para mitigação da propagação do fogo.
+</p>
+ 
 ## :bookmark_tabs: Descrição do projeto
 
 Este projeto busca o desenvolvimento de um simulador computacional destinado à modelagem da propagação de incêndios em uma floresta. A representação da área florestal é feita através de uma matriz bidimensional.  Esta estrutura de dados permite discretizar o espaço e modelar as relações de vizinhança entre diferentes porções da floresta.  Cada célula da matriz representa um quadrante da área florestal e é caracterizada por um estado, que evolui dinamicamente ao longo da simulação em função das regras de propagação do incêndio e da interação com outros elementos do modelo.
