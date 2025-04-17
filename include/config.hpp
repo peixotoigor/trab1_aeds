@@ -5,13 +5,13 @@
 #include <utility>
 
 // Número máximo de iterações
-const int MAX_ITERACOES = 10;
+const int MAX_ITERACOES = 100;
 
 // Número máximo de permanência
 const int MAX_PERMANENCIA = 3;
 
 // Ativar ou desativar o ventgo
-const bool VENTO_ATIVO = true;
+const bool VENTO_ATIVO = false;
 
 // Enum para identificar as direções do vento
 enum DIRECOES {
