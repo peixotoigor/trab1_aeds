@@ -43,7 +43,7 @@ Além da destruição imediata, as consequências de um incêndio vão além do 
  
 ## :bookmark_tabs: Descrição do projeto
 
-Este projeto busca o desenvolvimento de um simulador computacional destinado à modelagem da propagação de incêndios em uma floresta. A representação da área florestal é feita através de uma matriz bidimensional.  Esta estrutura de dados permite discretizar o espaço e modelar as relações de vizinhança entre diferentes porções da floresta.  Cada célula da matriz representa um quadrante da área florestal e é caracterizada por um estado, que evolui dinamicamente ao longo da simulação em função das regras de propagação do incêndio e da interação com outros elementos do modelo.
+Este projeto busca o desenvolvimento de prótotipo de um simulador computacional destinado à modelagem da propagação de incêndios em uma floresta. A representação da área florestal é feita através de uma matriz bidimensional.  Esta estrutura de dados permite discretizar o espaço e modelar as relações de vizinhança entre diferentes porções da floresta.  Cada célula da matriz representa um quadrante da área florestal e é caracterizada por um estado, que evolui dinamicamente ao longo da simulação em função das regras de propagação do incêndio e da interação com outros elementos do modelo.
 <p>
 <p align="justify">
 Além da simulação da propagação do incêndio, o projeto incorpora a modelagem do comportamento de um agente (animal) inserido neste ambiente.  O animal é capaz de se movimentar pela área florestal, buscando rotas de fuga seguras em relação ao fogo. 
