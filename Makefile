@@ -8,7 +8,8 @@ TARGET   := app
 INCLUDE  := -Iinclude/
 SRC      := $(wildcard src/*.cpp) 
 
-OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+OBJECTS := $(notdir $(SRC:.cpp=.o))
+OBJECTS := $(addprefix $(OBJ_DIR)/, $(OBJECTS))
 
 all: build $(APP_DIR)/$(TARGET)
 
@@ -25,6 +26,8 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 build:
 	@mkdir -p $(APP_DIR)
 	@mkdir -p $(OBJ_DIR)
+
+CXXFLAGS := -Wall -Wextra
 
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
