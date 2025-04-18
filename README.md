@@ -167,7 +167,6 @@ trab1_aeds/
 │   ├── propagacaoFogo.cpp      # Implementação da propagação do fogo
 │   ├── relatorio.cpp           # Implementação dos relatórios
 │   ├── umidade.cpp             # Implementação da lógica de umidade
-│   └── programa                # (Opcional) Executável/teste auxiliar
 └── .vscode/                # Configurações do Visual Studio Code
     └── settings.json           # Configurações específicas do projeto
 ```
