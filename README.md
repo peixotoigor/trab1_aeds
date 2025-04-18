@@ -237,11 +237,44 @@ O programa encerra sua execução, deixando os resultados disponíveis nos arqui
 
 ## :keyboard: Instalação e Configuração 
 
-Para a execução correta do software é necessário os seguintes requisitos e dependências:
+Para a execução correta do software é interessante  os seguintes requisitos e dependências:
   * C++17 ou superior (compilador: g++ recomendado)
-  * Python 3.x (para geração de matrizes de teste)
+  * Python 3.12.3 ou superior (para geração de matrizes de teste)
   * Make (para build automatizado)
-  * Linux (desenvolvido/testado em Ubuntu, mas portável)
+  * Linux  (desenvolvido/testado em Ubuntu, mas portável)
+
+### **Passos e Comandos**
+
+#### **1. Verificar e Instalar o Compilador C++ (`g++`)**
+Verifique a versão instalada:
+```bash
+g++ --version
+```
+Se a versão for inferior a C++17, instale:
+```bash
+sudo apt update
+sudo apt install g++ -y
+```
+#### **2. Verificar e Instalar Python 3.12.3 ou Superior**
+Verifique a versão instalada:
+```bash
+python3 --version
+```
+Se a versão não for a desejada, atualize ou instale::
+```bash
+sudo apt update
+sudo apt install python3 -y
+```
+#### **3. Verificar e Instalar Make**
+Verifique a versão instalada:
+```bash
+make --version
+```
+Se a versão não for a desejada, atualize ou instale::
+```bash
+sudo apt update
+sudo apt install make -y
+```
 
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
