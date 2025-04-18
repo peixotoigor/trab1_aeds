@@ -23,6 +23,8 @@
 
 :small_blue_diamond: [ Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
+:small_blue_diamond: [Implementação](#Implementacao)
+
 :small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
 
 :small_blue_diamond: [Desenvolvedores do Projeto](#Desenvolvedores-do-Projeto)
@@ -171,6 +173,70 @@ trab1_aeds/
 └── .vscode/                # Configurações do Visual Studio Code
     └── settings.json           # Configurações específicas do projeto
 ```
+## :man_technologist: Implementação
+#### 1. Início e Leitura de Dados
+
+O programa inicia lendo a matriz de entrada, que representa a floresta, a posição inicial do fogo e demais parâmetros necessários para a simulação.  
+Essa matriz pode ser gerada manualmente ou por meio de um script Python fornecido no projeto.
+
+---
+
+#### 2. Inicialização
+
+Variáveis de controle são inicializadas, incluindo:  
+- A posição do animal.  
+- A fila de propagação do fogo.  
+- Contadores de iteração.  
+- Flags de status (animal vivo, chegou à água, etc.).  
+- Estruturas para registrar o caminho percorrido pelo animal.
+
+---
+
+#### 3. Loop Principal da Simulação
+
+O programa entra em um laço principal que representa o avanço do tempo na simulação. Este laço continua até que uma **condição de parada** seja atingida:  
+- Animal morto.  
+- Toda a área consumida pelo fogo.  
+- Número máximo de iterações.
+
+#### **Dentro de cada iteração do loop**:
+
+##### 3.1 Movimentação do Animal:  
+- O animal avalia as células vizinhas e decide seu próximo movimento com base em prioridades: água, área segura, árvore saudável, etc.  
+- Evita retornar para posições já visitadas, exceto em situações de borda.
+
+##### 3.2 Propagação do Fogo:  
+- O fogo se propaga para células vizinhas de acordo com as regras do simulador, utilizando uma fila para processar apenas as células em chamas.
+
+##### 3.3 Verificação de Estado do Animal:  
+- O programa verifica se o animal foi atingido pelo fogo.  
+- Se possível, tenta movê-lo para uma célula segura.  
+- Caso contrário, o animal é considerado morto.
+
+##### 3.4 Verificação de Condições de Parada:  
+- O simulador checa se o animal morreu.  
+- Se toda a área foi consumida pelo fogo.  
+- Se o número máximo de iterações foi atingido.  
+- Caso qualquer uma dessas condições seja satisfeita, o loop é encerrado.
+
+##### 3.5 Salvamento do Estado Atual:  
+- O estado da matriz e o caminho percorrido pelo animal são registrados para análise posterior.
+
+---
+
+#### 4. Geração do Relatório Final
+
+Após o término do loop principal, o programa gera um relatório final contendo:  
+- O estado final da matriz.  
+- O caminho percorrido pelo animal.  
+- O número de passos.  
+- O status final do animal (sobreviveu, morreu, chegou à água, etc.).
+
+---
+
+####  5. Término
+
+O programa encerra sua execução, deixando os resultados disponíveis nos arquivos de saída para análise.
 
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
