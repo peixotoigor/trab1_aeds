@@ -25,7 +25,7 @@
 
 :small_blue_diamond: [Implementação](#Implementacao)
 
-:small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
+:small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
 
 :small_blue_diamond: [Desenvolvedores do Projeto](#Desenvolvedores-do-Projeto)
 
@@ -152,7 +152,6 @@ trab1_aeds/
 │   ├── config.hpp              # Configurações e constantes globais
 │   ├── conferirFogo.hpp        # Funções para checar o fogo na matriz
 │   ├── leitorMatriz.hpp        # Leitura de arquivos de matriz
-│   ├── matriz_reader.hpp       # Alternativa para leitura de matriz
 │   ├── melhorMovimento.hpp     # Lógica de movimentação do animal
 │   ├── numAleatorio.hpp        # Funções para geração de números aleatórios
 │   ├── propagacaoFogo.hpp      # Lógica de propagação do fogo
@@ -163,7 +162,6 @@ trab1_aeds/
 │   ├── conferirFogo.cpp        # Implementação das funções de fogo
 │   ├── leitorMatriz.cpp        # Implementação da leitura de matriz
 │   ├── main.cpp                # Função principal (main)
-│   ├── matriz_reader.cpp       # Alternativa para leitura de matriz
 │   ├── melhorMovimento.cpp     # Implementação do movimento do animal
 │   ├── numAleatorio.cpp        # Implementação dos números aleatórios
 │   ├── propagacaoFogo.cpp      # Implementação da propagação do fogo
@@ -237,6 +235,14 @@ Após o término do loop principal, o programa gera um relatório final contendo
 ####  5. Término
 
 O programa encerra sua execução, deixando os resultados disponíveis nos arquivos de saída para análise.
+
+## :keyboard: Instalação e Configuração 
+
+Para a execução correta do software é necessário os seguintes requisitos e dependências:
+  * C++17 ou superior (compilador: g++ recomendado)
+  * Python 3.x (para geração de matrizes de teste)
+  * Make (para build automatizado)
+  * Linux (desenvolvido/testado em Ubuntu, mas portável)
 
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
