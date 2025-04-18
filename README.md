@@ -129,7 +129,10 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blueviolet)](https://code.visualstudio.com/docs/?dv=linux64_deb)
 [![Sistema Operacional](https://img.shields.io/badge/ISO-Ubuntu%20Linux%20WSL%2022.04-red)](https://ubuntu.com/wsl)
 
-## Estutura Geral do Projeto
+## :file_folder: Estrutura Geral do Projeto
+
+A estrutura do projeto é disposto da seguinte maneira:
+
 ```markdown
 trab1_aeds/
 ├── Makefile                # Script para compilar o projeto (build automático)
