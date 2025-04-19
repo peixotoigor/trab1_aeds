@@ -287,9 +287,9 @@ Para gerar uma matriz com tamanho e configurações da malha diferentes acesse o
 ```bash
 cd data
 ```
-O arquivo geradorMatriz.py é capaz de gerar matrizes diferentes sendo possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaçosos vazios e presença de água. Para modificar basta alterar os valores multiplicadores das funções associadas.
-Código: Dimensão da matriz e cálculo de distribuição
+O arquivo geradorMatriz.py é capaz de gerar matrizes diferentes sendo possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
 
+Código: Dimensão da matriz e cálculo de distribuição
 ```python
 # Dimensão da matriz
 rows, cols = 10, 10
@@ -299,6 +299,25 @@ total_cells = rows * cols
 num_ones = int(total_cells * 0.8)  # arvores saudaveis
 num_zeros = int(total_cells * 0.1) # espaços vazios
 num_fours = total_cells - num_ones - num_zeros  # agua
+```
+Retorne para a raiz do diretório:
+```bash
+cd ..
+```
+
+#### **6. Compile o projeto:**
+Para compilar o projeto:
+```bash
+make
+```
+Observações: para cada alteração das matrizes é necessário, compilar o projeto. Assim, execute:
+```bash
+make clean
+make
+```
+#### **7. Execute o projeto:**
+```bash
+./build/app
 ```
 
 
