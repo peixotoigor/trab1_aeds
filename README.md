@@ -319,6 +319,25 @@ make
 ```bash
 ./build/app
 ```
+####  8. Guia de Uso
+
+##### Execução do Programa
+O programa irá:
+- Ler o arquivo de entrada.
+- Executar a simulação.
+- Salvar os resultados em **saida.dat** e **log.dat**.
+
+##### Parâmetros Configuráveis
+
+Ajuste os parâmetros globais no arquivo `config.hpp`, como:
+- Número máximo de iterações.
+- Permanência máxima.
+- Configurações de vento.
+
+##### Saídas
+
+- **saida.dat**: Registro de cada iteração e o estado final da matriz.  
+- **log.dat**: Logs de execução e possíveis erros.
 
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
