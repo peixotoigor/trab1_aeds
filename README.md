@@ -276,6 +276,18 @@ sudo apt update
 sudo apt install make -y
 ```
 
+#### **4. Clone o repositório**
+Verifique a versão instalada:
+```bash
+git clone <url-do-repositorio>
+cd trab1_aeds
+```
+Se a versão não for a desejada, atualize ou instale::
+```bash
+sudo apt update
+sudo apt install make -y
+```
+
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
 [<img loading="lazy" src="https://avatars.githubusercontent.com/u/106671313" width=115><br><sub>Igor Peixoto</sub>](https://github.com/peixotoigor)
