@@ -336,7 +336,7 @@ Ajuste os parâmetros globais no arquivo `config.hpp`, como:
 
 ##### Saídas
 
-- **outpu.dat**: Registro de cada iteração e o estado final da matriz.  
+- **output.dat**: Registro de cada iteração e o estado final da matriz.  
 - **log.dat**: Logs de execução e possíveis erros.
 
 
