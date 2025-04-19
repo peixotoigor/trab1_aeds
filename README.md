@@ -277,15 +277,28 @@ sudo apt install make -y
 ```
 
 #### **4. Clone o repositório**
-Verifique a versão instalada:
+No termimal digite o seguinte comando para clonar o repositório e posteriomente acessar o projeto:
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/peixotoigor/trab1_aeds.git
 cd trab1_aeds
 ```
-Se a versão não for a desejada, atualize ou instale::
+#### **5.Gere uma matriz de entrada (opcional):**
+Para gerar uma matriz com tamanho e configurações da malha diferentes acesse o arquivo que esta na pasta data/:
 ```bash
-sudo apt update
-sudo apt install make -y
+cd data
+```
+
+Código: Dimensão da matriz e cálculo de distribuição
+
+```python
+# Dimensão da matriz
+rows, cols = 10, 10
+
+# Cálculo do total de células e distribuição
+total_cells = rows * cols
+num_ones = int(total_cells * 0.8)
+num_zeros = int(total_cells * 0.1)
+num_fours = total_cells - num_ones - num_zeros  # Corrigido aqui
 ```
 
 
