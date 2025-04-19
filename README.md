@@ -146,7 +146,7 @@ trab1_aeds/
 │   ├── input.dat           # Arquivo de entrada padrão para a simulação
 │   ├── matriz.dat          # Matriz gerada pelo script Python
 │   ├── log.dat             # Log de execução da simulação
-│   └── saida.dat           # Saída final da simulação (resultados)
+│   └── output.dat           # Saída final da simulação (resultados)
 ├── include/                # Arquivos de cabeçalho (headers) do projeto
 │   ├── Simulador.hpp           # Declaração da classe/função principal da simulação
 │   ├── config.hpp              # Configurações e constantes globais
@@ -336,7 +336,7 @@ Ajuste os parâmetros globais no arquivo `config.hpp`, como:
 
 ##### Saídas
 
-- **saida.dat**: Registro de cada iteração e o estado final da matriz.  
+- **outpu.dat**: Registro de cada iteração e o estado final da matriz.  
 - **log.dat**: Logs de execução e possíveis erros.
 
 
