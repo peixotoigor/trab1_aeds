@@ -23,6 +23,8 @@
 
 :small_blue_diamond: [ Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
+:small_blue_diamond: [Casos de teste](#Casos-de-teste)
+
 :small_blue_diamond: [Implementação](#Implementacao)
 
 :small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
@@ -170,6 +172,13 @@ trab1_aeds/
 └── .vscode/                # Configurações do Visual Studio Code
     └── settings.json           # Configurações específicas do projeto
 ```
+
+##  :test_tube:  Casos de teste 
+Para verificar o comportamento da simulação foram testados os seguintes casos
+  * [Propagação sem a influência do vento]()
+  * [Propagação com a influência do vento]()
+  * [Segunda chance]()
+
 ## :man_technologist: Implementação
 
 Veja o diagrama completp [aqui](diagrama.md)
