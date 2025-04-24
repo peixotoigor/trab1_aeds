@@ -21,7 +21,7 @@
 
 :small_blue_diamond: [Ambiente de Criação](#Ambiente-de-criacao)
 
-:small_blue_diamond: [ Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
+:small_blue_diamond: [Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
 :small_blue_diamond: [Casos de teste](#Casos-de-teste)
 
@@ -133,6 +133,12 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blueviolet)](https://code.visualstudio.com/docs/?dv=linux64_deb)
 [![Sistema Operacional](https://img.shields.io/badge/ISO-Ubuntu%20Linux%20WSL%2022.04-red)](https://ubuntu.com/wsl)
 
+##  :test_tube:  Casos de teste 
+Para verificar o comportamento da simulação foram testados os seguintes casos
+  * [Propagação sem a influência do vento]()
+  * [Propagação com a influência do vento]()
+  * [Segunda chance]()
+
 ## :file_folder: Estrutura Geral do Projeto
 
 A estrutura do projeto é disposto da seguinte maneira:
@@ -172,12 +178,6 @@ trab1_aeds/
 └── .vscode/                # Configurações do Visual Studio Code
     └── settings.json           # Configurações específicas do projeto
 ```
-
-##  :test_tube:  Casos de teste 
-Para verificar o comportamento da simulação foram testados os seguintes casos
-  * [Propagação sem a influência do vento]()
-  * [Propagação com a influência do vento]()
-  * [Segunda chance]()
 
 ## :man_technologist: Implementação
 
