@@ -23,7 +23,9 @@
 
 :small_blue_diamond: [ Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
-:small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
+:small_blue_diamond: [Implementação](#Implementacao)
+
+:small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
 
 :small_blue_diamond: [Desenvolvedores do Projeto](#Desenvolvedores-do-Projeto)
 
@@ -129,30 +131,216 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blueviolet)](https://code.visualstudio.com/docs/?dv=linux64_deb)
 [![Sistema Operacional](https://img.shields.io/badge/ISO-Ubuntu%20Linux%20WSL%2022.04-red)](https://ubuntu.com/wsl)
 
-## Estutura Geral do Projeto
+## :file_folder: Estrutura Geral do Projeto
+
+A estrutura do projeto é disposto da seguinte maneira:
+
 ```markdown
-/SimuladorFloresta
-│
-├── main.cpp                  // Apenas chama a função executarSimulacao()
-├── config.hpp                // Constantes globais e configurações da simulação
-│
-├── Simulador.hpp             // Declara a função que gerencia a simulação completa
-├── Simulador.cpp             // Implementa a função executarSimulacao()
-│
-├── leitorMatriz.hpp          // Declara a classe para leitura do arquivo
-├── leitorMatriz.cpp          // Implementa a leitura e armazenamento dos dados
-│
-├── Fogo.hpp                  // Declara a classe Fogo (propagação do incêndio)
-├── Fogo.cpp                  // Implementa a propagação do fogo usando diretamente a matriz
-│
-├── Animal.hpp                // Declara a classe Animal (movimentação do animal)
-├── Animal.cpp                // Implementa a movimentação e as regras do animal
-│
-├── Relatorio.hpp             // Declara a classe para gerar relatório da simulação
-├── Relatorio.cpp             // Implementa a geração do relatório
-│
-└── entrada.txt               // Arquivo de entrada contendo a matriz e dados iniciais
- ```
+trab1_aeds/
+├── Makefile                # Script para compilar o projeto (build automático)
+├── README.md               # Descrição geral do projeto e instruções de uso
+├── build/                  # Diretório para arquivos binários/compilados
+│   └── app                 # Executável principal gerado pela compilação
+├── data/                   # Arquivos de dados de entrada e saída
+│   ├── geradorMatriz.py    # Script Python para gerar matrizes de teste
+│   ├── input.dat           # Arquivo de entrada padrão para a simulação
+│   ├── matriz.dat          # Matriz gerada pelo script Python
+│   ├── log.dat             # Log de execução da simulação
+│   └── output.dat           # Saída final da simulação (resultados)
+├── include/                # Arquivos de cabeçalho (headers) do projeto
+│   ├── Simulador.hpp           # Declaração da classe/função principal da simulação
+│   ├── config.hpp              # Configurações e constantes globais
+│   ├── conferirFogo.hpp        # Funções para checar o fogo na matriz
+│   ├── leitorMatriz.hpp        # Leitura de arquivos de matriz
+│   ├── melhorMovimento.hpp     # Lógica de movimentação do animal
+│   ├── numAleatorio.hpp        # Funções para geração de números aleatórios
+│   ├── propagacaoFogo.hpp      # Lógica de propagação do fogo
+│   ├── relatorio.hpp           # Funções para geração de relatórios
+│   └── umidade.hpp             # Funções relacionadas à umidade/água
+├── src/                    # Código-fonte principal do projeto
+│   ├── Simulador.cpp           # Implementação da simulação principal
+│   ├── conferirFogo.cpp        # Implementação das funções de fogo
+│   ├── leitorMatriz.cpp        # Implementação da leitura de matriz
+│   ├── main.cpp                # Função principal (main)
+│   ├── melhorMovimento.cpp     # Implementação do movimento do animal
+│   ├── numAleatorio.cpp        # Implementação dos números aleatórios
+│   ├── propagacaoFogo.cpp      # Implementação da propagação do fogo
+│   ├── relatorio.cpp           # Implementação dos relatórios
+│   ├── umidade.cpp             # Implementação da lógica de umidade
+└── .vscode/                # Configurações do Visual Studio Code
+    └── settings.json           # Configurações específicas do projeto
+```
+## :man_technologist: Implementação
+
+Veja o diagrama completp [aqui](diagrama.md)
+#### 1. Início e Leitura de Dados
+
+O programa inicia lendo a matriz de entrada, que representa a floresta, a posição inicial do fogo e demais parâmetros necessários para a simulação.  
+Essa matriz pode ser gerada manualmente ou por meio de um script Python fornecido no projeto.
+
+---
+
+#### 2. Inicialização
+
+Variáveis de controle são inicializadas, incluindo:  
+- A posição do animal.  
+- A fila de propagação do fogo.  
+- Contadores de iteração.  
+- Flags de status (animal vivo, chegou à água, etc.).  
+- Estruturas para registrar o caminho percorrido pelo animal.
+
+---
+
+#### 3. Loop Principal da Simulação
+
+O programa entra em um laço principal que representa o avanço do tempo na simulação. Este laço continua até que uma **condição de parada** seja atingida:  
+- Animal morto.  
+- Toda a área consumida pelo fogo.  
+- Número máximo de iterações.
+
+#### **Dentro de cada iteração do loop**:
+
+##### 3.1 Movimentação do Animal:  
+- O animal avalia as células vizinhas e decide seu próximo movimento com base em prioridades: água, área segura, árvore saudável, etc.  
+- Evita retornar para posições já visitadas, exceto em situações de borda.
+
+##### 3.2 Propagação do Fogo:  
+- O fogo se propaga para células vizinhas de acordo com as regras do simulador, utilizando uma fila para processar apenas as células em chamas.
+
+##### 3.3 Verificação de Estado do Animal:  
+- O programa verifica se o animal foi atingido pelo fogo.  
+- Se possível, tenta movê-lo para uma célula segura.  
+- Caso contrário, o animal é considerado morto.
+
+##### 3.4 Verificação de Condições de Parada:  
+- O simulador checa se o animal morreu.  
+- Se toda a área foi consumida pelo fogo.  
+- Se o número máximo de iterações foi atingido.  
+- Caso qualquer uma dessas condições seja satisfeita, o loop é encerrado.
+
+##### 3.5 Salvamento do Estado Atual:  
+- O estado da matriz e o caminho percorrido pelo animal são registrados para análise posterior.
+
+---
+
+#### 4. Geração do Relatório Final
+
+Após o término do loop principal, o programa gera um relatório final contendo:  
+- O estado final da matriz.  
+- O caminho percorrido pelo animal.  
+- O número de passos.  
+- O status final do animal (sobreviveu, morreu, chegou à água, etc.).
+
+---
+
+####  5. Término
+
+O programa encerra sua execução, deixando os resultados disponíveis nos arquivos de saída para análise.
+
+## :keyboard: Instalação e Configuração 
+
+Para a execução correta do software é interessante  os seguintes requisitos e dependências:
+  * C++17 ou superior (compilador: g++ recomendado)
+  * Python 3.12.3 ou superior (para geração de matrizes de teste)
+  * Make (para build automatizado)
+  * Linux  (desenvolvido/testado em Ubuntu, mas portável)
+
+### **Passos e Comandos**
+
+#### **1. Verificar e Instalar o Compilador C++ (`g++`)**
+Verifique a versão instalada:
+```bash
+g++ --version
+```
+Se a versão for inferior a C++17, instale:
+```bash
+sudo apt update
+sudo apt install g++ -y
+```
+#### **2. Verificar e Instalar Python 3.12.3 ou Superior**
+Verifique a versão instalada:
+```bash
+python3 --version
+```
+Se a versão não for a desejada, atualize ou instale::
+```bash
+sudo apt update
+sudo apt install python3 -y
+```
+#### **3. Verificar e Instalar Make**
+Verifique a versão instalada:
+```bash
+make --version
+```
+Se a versão não for a desejada, atualize ou instale::
+```bash
+sudo apt update
+sudo apt install make -y
+```
+
+#### **4. Clone o repositório**
+No termimal digite o seguinte comando para clonar o repositório e posteriomente acessar o projeto:
+```bash
+git clone https://github.com/peixotoigor/trab1_aeds.git
+cd trab1_aeds
+```
+#### **5.Gere uma matriz de entrada (opcional):**
+Para gerar uma matriz com tamanho e configurações da malha diferentes acesse o arquivo que esta na pasta data/:
+```bash
+cd data
+```
+O arquivo geradorMatriz.py é capaz de gerar matrizes diferentes sendo possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
+
+Código: Dimensão da matriz e cálculo de distribuição
+```python
+# Dimensão da matriz
+rows, cols = 10, 10
+
+# Cálculo do total de células e distribuição
+total_cells = rows * cols  
+num_ones = int(total_cells * 0.8)  # arvores saudaveis
+num_zeros = int(total_cells * 0.1) # espaços vazios
+num_fours = total_cells - num_ones - num_zeros  # agua
+```
+Retorne para a raiz do diretório:
+```bash
+cd ..
+```
+
+#### **6. Compile o projeto:**
+Para compilar o projeto:
+```bash
+make
+```
+Observações: para cada alteração das matrizes é necessário, compilar o projeto. Assim, execute:
+```bash
+make clean
+make
+```
+#### **7. Execute o projeto:**
+```bash
+./build/app
+```
+####  8. Guia de Uso
+
+##### Execução do Programa
+O programa irá:
+- Ler o arquivo de entrada.
+- Executar a simulação.
+- Salvar os resultados em **saida.dat** e **log.dat**.
+
+##### Parâmetros Configuráveis
+
+Ajuste os parâmetros globais no arquivo `config.hpp`, como:
+- Número máximo de iterações.
+- Permanência máxima.
+- Configurações de vento.
+
+##### Saídas
+
+- **output.dat**: Registro de cada iteração e o estado final da matriz.  
+- **log.dat**: Logs de execução e possíveis erros.
+
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
 [<img loading="lazy" src="https://avatars.githubusercontent.com/u/106671313" width=115><br><sub>Igor Peixoto</sub>](https://github.com/peixotoigor)
