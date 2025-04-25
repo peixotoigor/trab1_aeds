@@ -201,7 +201,7 @@ const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO
     ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
     : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
 ```
-Assim como é possível modificar os parâmetros da simulação, é possível gerar matrizes diferentes com o utilizando o script em Python [geradorMatriz.py](data/geradorMatriz.py) Nele é possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
+Assim como é possível modificar os parâmetros da simulação, é possível gerar matrizes diferentes com o utilizando o script em Python [geradorMatriz.py](data/geradorMatriz.py). Nele é possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
 
 Código: Dimensão da matriz e cálculo de distribuição
 ```python
@@ -218,7 +218,14 @@ Para maior clareza da descrição a seguir, é interessante acompanhar o [diagra
 
 A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando o script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
 
-É realizada uma validação que garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um 'vector<vector<char>>', estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices. Além disso, é armazenada a posição inicial do fogo na matriz. Para melhorar a dinâmica de execução, foi definida uma função chamada [numAleatorio](src/numAleatorio.cpp) que gera um número dentro dos limites da matriz. Essa função é utilizada para mapear posições da linha e coluna para o agente (animal) na simulação. Uma estratégia utilizada para garantir que a posição do fogo e do animal não coincidam foi retirar uma unidade da posição do animal. 
+Durante a leitura da matriz é realizada uma validação que garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um 'vector<vector<char>>', estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices. Além disso, é armazenada a posição inicial do fogo na matriz e inserida em uma fila FIFO ('queue<pair<int, int>> filaFogo') que organiza as células em chamas por ordem de ignição para controlar a propagação do fogo ao longo das iterações.
+
+
+
+
+
+
+Para melhorar a dinâmica de execução, foi definida uma função chamada [numAleatorio](src/numAleatorio.cpp) que gera um número dentro dos limites da matriz. Essa função é utilizada para mapear posições da linha e coluna para o agente (animal) na simulação. Uma estratégia utilizada para garantir que a posição do fogo e do animal não coincidam foi retirar uma unidade da posição do animal. 
 ```cpp
     int posAnimalX = numeroAleatorio(0, linhas)-1;
     int posAnimalY = numeroAleatorio(0, colunas)-1;
