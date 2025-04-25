@@ -218,22 +218,14 @@ Para maior clareza da descrição a seguir, é interessante acompanhar o [diagra
 
 A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando o script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
 
-Durante a leitura da matriz é realizada uma validação que garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um 'vector<vector<char>>', estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices. Além disso, é armazenada a posição inicial do fogo na matriz e inserida em uma fila FIFO ('queue<pair<int, int>> filaFogo') que organiza as células em chamas por ordem de ignição para controlar a propagação do fogo ao longo das iterações.
-
-
-
-
-
-
-Para melhorar a dinâmica de execução, foi definida uma função chamada [numAleatorio](src/numAleatorio.cpp) que gera um número dentro dos limites da matriz. Essa função é utilizada para mapear posições da linha e coluna para o agente (animal) na simulação. Uma estratégia utilizada para garantir que a posição do fogo e do animal não coincidam foi retirar uma unidade da posição do animal. 
+Durante a leitura da matriz é realizada uma validação que garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um ```vector<vector<char>>```, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices. Além disso, é armazenada a posição inicial do fogo na matriz e inserida em uma fila FIFO (```queue<pair<int, int>> filaFogo```) que organiza as células em chamas por ordem de ignição para controlar a propagação do fogo ao longo das iterações. Em seguida, a posição inicial do agente (animal) é sorteada aleatoriamente usando a função [numAleatorio](src/numAleatorio.cpp) que gera um número dentro dos limites da matriz, e essa posição é registrada em um vetor que irá armazenar todo o caminho percorrido pelo animal durante a simulação. Uma estratégia utilizada para garantir que a posição do fogo e do animal não coincidam foi retirar uma unidade da posição do animal. 
 ```cpp
     int posAnimalX = numeroAleatorio(0, linhas)-1;
     int posAnimalY = numeroAleatorio(0, colunas)-1;
+    std::vector<std::pair<int, int>> caminhoPercorrido;
+    caminhoPercorrido.push_back({posAnimalX, posAnimalY});
 ```
-Um vetor de pares de inteiros (caminhoPercorrido) é criado para armazenar as coordenadas (x, y) de cada posição visitada pelo animal. A posição inicial do animal é registrada imediatamente após sua definição.
-Atualização durante a simulação
-
-A cada movimento do animal (incluindo movimentos de fuga/segunda chance), a nova posição é adicionada ao vetor:
+Variáveis de controle são inicializadas para acompanhar o número de passos dados pelo animal, o tempo de permanência em local seguro, o número de iterações, o status de vida do animal, se ele chegou à água e se ainda existe área disponível não consumida pelo fogo. Um arquivo de saída é aberto para registrar o progresso da simulação a cada iteração.
 
 
 Em seguida, o Simulador.cpp assume o controle, inicializando a propagação do fogo com uma fila FIFO (queue<pair<int, int>> filaFogo), que prioriza células em chamas na ordem de ignição. A posição inicial do fogo (fogoInicialX, fogoInicialY) é marcada como '2' e adicionada à fila. Paralelamente, o animal é posicionado aleatoriamente usando a função numeroAleatorio() (definida em numAleatorio.cpp), que gera coordenadas dentro dos limites da matriz, garantindo que a simulação comece com condições variáveis. O histórico de movimentos do animal é registrado em um vector<pair<int, int>> caminhoPercorrido, permitindo evitar loops ao priorizar células não visitadas.
