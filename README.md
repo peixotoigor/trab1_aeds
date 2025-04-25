@@ -180,8 +180,34 @@ trab1_aeds/
 ```
 
 ## :man_technologist: Implementação
+<a href="arquivo.md" title="Prévia: Este arquivo contém a descrição da simulação">Veja o arquivo completo</a>
 
-Veja o diagrama completp [aqui](diagrama.md)
+A simulação inicia sua execução com o módulo leitorMatriz.cpp, responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
+
+Em seguida, o Simulador.cpp assume o controle, inicializando a propagação do fogo com uma fila FIFO (queue<pair<int, int>> filaFogo), que prioriza células em chamas na ordem de ignição. A posição inicial do fogo (fogoInicialX, fogoInicialY) é marcada como '2' e adicionada à fila. Paralelamente, o animal é posicionado aleatoriamente usando a função numeroAleatorio() (definida em numAleatorio.cpp), que gera coordenadas dentro dos limites da matriz, garantindo que a simulação comece com condições variáveis. O histórico de movimentos do animal é registrado em um vector<pair<int, int>> caminhoPercorrido, permitindo evitar loops ao priorizar células não visitadas.
+
+O loop principal, limitado por MAX_ITERACOES, executa as seguintes etapas iterativamente:
+
+Registro do Estado: relatorio.cpp salva a matriz em output.dat, substituindo células do caminho do animal por * para visualização clara.
+
+Verificação de Água: Se o animal está em '4', umidade.cpp é acionado, convertendo a célula de água em '0' (segura) e regenerando células adjacentes: fogo ('2') vira '1' (extinção local), e outras (exceto '4') são marcadas como saudáveis.
+
+Movimentação do Animal: melhorMovimento.cpp avalia as 4 direções ortogonais (DIRECOES_ORTOGONAIS), atribuindo prioridades: '4' (prioridade 1) > '0' (2) > '1' (3) > '3' (4). Células em fogo ('2') são ignoradas, e células não visitadas são priorizadas. Se todas as opções forem visitadas, o algoritmo permite revisitar células com menor prioridade. A nova posição é adicionada ao caminhoPercorrido, e o contador de passos é incrementado.
+
+Propagação do Fogo: propagacaoFogo.cpp processa a fila de fogo, convertendo cada '2' em '3' (queimado) e propagando chamas para células '1' adjacentes, seguindo as direções do vento (VENTO_DIRECOES). Novos focos ('2') são enfileirados para processamento na próxima iteração.
+
+Verificação de Sobrevivência: conferirFogo.cpp checa se o animal está em '2'. Em caso positivo, tenta movê-lo para células seguras ('0', '1', '4'). Se falhar, define animalVivo = false, encerrando o loop.
+
+As condições de parada são verificadas a cada ciclo:
+
+Fogo Extinto: A função areaConsumidaPeloFogo() (em Simulador.cpp) varre a matriz em busca de '2'. Se ausentes, a simulação termina.
+
+Morte do Animal: Caso cercado por fogo sem rotas de fuga.
+
+Limite de Iterações: MAX_ITERACOES é atingido.
+
+Ao final, relatorio.cpp gera um relatório em log.dat com o caminho completo, número de passos, status de sobrevivência e matriz final. Já output.dat armazena snapshots iterativos, permitindo análise pós-simulação. A escolha de estruturas como queue para o fogo (FIFO) e vector para o caminho equilibra eficiência e simplicidade, enquanto a modularidade do código facilita a extensão
+Veja o diagrama completo [aqui](diagrama.md)
 #### 1. Início e Leitura de Dados
 
 O programa inicia lendo a matriz de entrada, que representa a floresta, a posição inicial do fogo e demais parâmetros necessários para a simulação.  
