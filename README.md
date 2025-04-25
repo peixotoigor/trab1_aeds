@@ -133,11 +133,6 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blueviolet)](https://code.visualstudio.com/docs/?dv=linux64_deb)
 [![Sistema Operacional](https://img.shields.io/badge/ISO-Ubuntu%20Linux%20WSL%2022.04-red)](https://ubuntu.com/wsl)
 
-##  :test_tube:  Casos de teste 
-Para verificar o comportamento da simulação foram testados os seguintes casos
-  * [Propagação sem a influência do vento]()
-  * [Propagação com a influência do vento]()
-  * [Segunda chance]()
 
 ## :file_folder: Estrutura Geral do Projeto
 
@@ -180,9 +175,9 @@ trab1_aeds/
 ```
 
 ## :man_technologist: Implementação
-<p align="justify">
+
 Antes de iniciar a simulação, é necessário configurar os parâmetros globais disponíveis no arquivo [config.hpp](https://github.com/peixotoigor/trab1_aeds/blob/main/include/config.hpp). Este arquivo centraliza constantes e estruturas que controlam limites operacionais e fatores ambientais, como o vento, permitindo ajustes rápidos e organizados sem alterar o código-fonte principal.
-</p>
+
 #### Limites Operacionais:
   * MAX_ITERACOES: Define o número máximo de iterações permitidas (100 por padrão), evitando execuções infinitas e controlando o tempo de simulação.
   * MAX_PERMANENCIA: Especifica quantas iterações o animal pode permanecer em uma célula segura ('0') antes de ser obrigado a se mover (3 por padrão), equilibrando estratégia de sobrevivência e dinâmica do ambiente.
@@ -206,7 +201,21 @@ const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO
     ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
     : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
 ```
-</p>
+Assim como é possível modificar os parâmetros da simulação, é possível gerar matrizes diferentes com o utilizando o script em Python [geradorMatriz.py](data/geradorMatriz.py) Nele é possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
+
+Código: Dimensão da matriz e cálculo de distribuição
+```python
+# Dimensão da matriz
+rows, cols = 10, 10
+
+# Cálculo do total de células e distribuição
+total_cells = rows * cols  
+num_ones = int(total_cells * 0.8)  # arvores saudaveis
+num_zeros = int(total_cells * 0.1) # espaços vazios
+num_fours = total_cells - num_ones - num_zeros  # agua
+```
+Para maior clareza da descrição a seguir, é interessante acompanhar o [diagrama](diagrama.md) do funcionamento completo do código.
+
 A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando um script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
 
 A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
@@ -234,7 +243,14 @@ Morte do Animal: Caso cercado por fogo sem rotas de fuga.
 Limite de Iterações: MAX_ITERACOES é atingido.
 
 Ao final, relatorio.cpp gera um relatório em log.dat com o caminho completo, número de passos, status de sobrevivência e matriz final. Já output.dat armazena snapshots iterativos, permitindo análise pós-simulação. A escolha de estruturas como queue para o fogo (FIFO) e vector para o caminho equilibra eficiência e simplicidade, enquanto a modularidade do código facilita a extensão
-Veja o diagrama completo [aqui](diagrama.md)
+
+
+##  :test_tube:  Casos de teste 
+Para verificar o comportamento da simulação foram testados os seguintes casos
+  * [Propagação sem a influência do vento]()
+  * [Propagação com a influência do vento]()
+  * [Segunda chance]()
+
 #### 1. Início e Leitura de Dados
 
 O programa inicia lendo a matriz de entrada, que representa a floresta, a posição inicial do fogo e demais parâmetros necessários para a simulação.  
