@@ -5,6 +5,7 @@
 #include "conferirFogo.hpp"
 #include "melhorMovimento.hpp"
 #include "propagacaoFogo.hpp"
+#include "areaConsumida.hpp"
 #include "relatorio.hpp"
 
 #include <string>	
@@ -13,18 +14,6 @@
 #include <fstream>
 #include <vector>
 
-// Verifica se toda a área foi consumida pelo fogo (não há mais '1' ou '2')
-bool areaConsumidaPeloFogo(const std::vector<std::vector<char>>& matriz) {
-    for (const auto& linha : matriz) {
-        for (char celula : linha) {
-           //if (celula == '2'|| celula=='1') {
-           if (celula == '2') {
-                return false; // Ainda há fogo
-            }
-        }
-    }
-    return true; // Tudo foi queimado ou virou outro estado
-}
 
 void executarSimulacao() {
     // Leitura do arquivo
@@ -50,8 +39,8 @@ void executarSimulacao() {
     // Posição aleatória do animal
     //int posAnimalX = 0;
     //int posAnimalY = 0;
-    int posAnimalX = numeroAleatorio(0, linhas - 1);
-    int posAnimalY = numeroAleatorio(0, colunas - 1);
+    int posAnimalX = numeroAleatorio(0, linhas)-1;
+    int posAnimalY = numeroAleatorio(0, colunas)-1;
     std::vector<std::pair<int, int>> caminhoPercorrido;
     caminhoPercorrido.push_back({posAnimalX, posAnimalY});
 

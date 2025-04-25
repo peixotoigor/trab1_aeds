@@ -1,7 +1,7 @@
 import random
 
 # Dimensão da matriz
-rows, cols = 100,100
+rows, cols = 10,10
 # Cálculo do total de células e distribuição
 total_cells = rows * cols  
 num_ones = int(total_cells * 0.7)  # arvores saudaveis
