@@ -17,8 +17,8 @@
 bool areaConsumidaPeloFogo(const std::vector<std::vector<char>>& matriz) {
     for (const auto& linha : matriz) {
         for (char celula : linha) {
-           if (celula == '2'|| celula=='1') {
-           //if (celula == '2') {
+           //if (celula == '2'|| celula=='1') {
+           if (celula == '2') {
                 return false; // Ainda há fogo
             }
         }
@@ -29,7 +29,7 @@ bool areaConsumidaPeloFogo(const std::vector<std::vector<char>>& matriz) {
 void executarSimulacao() {
     // Leitura do arquivo
     leitorMatriz leitor;
-    std::string caminhoArquivo = "../data/input.dat";
+    std::string caminhoArquivo = "../data/matriz.dat";
     std::ofstream arquivoSaida("../data/log.dat");
     leitor.carregarArquivo(caminhoArquivo, arquivoSaida);
     
@@ -45,6 +45,7 @@ void executarSimulacao() {
     std::queue<std::pair<int, int>> filaFogo;
     filaFogo.push({fogoInicialX, fogoInicialY});
     matrizOriginal[fogoInicialX][fogoInicialY] = '2';
+
 
     // Posição aleatória do animal
     //int posAnimalX = 0;
@@ -62,7 +63,7 @@ void executarSimulacao() {
     bool chegouNaAgua = false;
     bool areaDisponivel = true;
 
-    std::ofstream arquivoSaidaIter("../data/saida.dat");
+    std::ofstream arquivoSaidaIter("../data/output.dat");
 
     // Loop principal da simulação
     while (iteracaoAtual < MAX_ITERACOES && animalVivo && areaDisponivel){
@@ -82,6 +83,7 @@ void executarSimulacao() {
         if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_PERMANENCIA) {
             contadorPermanencia++;
         } else {
+
             // Movimentação do animal
             auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
             if (destino.first != -1 && destino.second != -1) {
@@ -93,14 +95,25 @@ void executarSimulacao() {
             }
         }
 
+        std::vector<std::vector<char>> matrizTemp = matrizOriginal;
+
         // Propagação do fogo (por uma iteração)
-        executarFogoIteracao(matrizOriginal, linhas, colunas, filaFogo);
+        executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo);
 
-
-        // Verifica se o animal foi atingido pelo fogo
-        verificarFogoSobreAnimal(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, animalVivo);
-        if (!animalVivo) {
-            break;
+        // Após a propagação, substitua a matriz original pela cópia
+        matrizOriginal = matrizTemp;
+        
+        // Segunda chance: se o animal está em fogo após a propagação
+        if (matrizOriginal[posAnimalX][posAnimalY] == '2') {
+            auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
+            if (destino.first != -1 && destino.second != -1) {
+               posAnimalX = destino.first;
+               posAnimalY = destino.second;
+               caminhoPercorrido.push_back(destino);
+            } else {
+                animalVivo = false;
+                break;
+            }
         }
         
         // Verifica se toda a área foi consumida pelo fogo
@@ -118,7 +131,7 @@ void executarSimulacao() {
         caminhoPercorrido,
         arquivoSaidaIter, 
         iteracaoAtual);
-    gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo, arquivoSaidaIter); 
+    gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo,iteracaoAtual, arquivoSaidaIter); 
     arquivoSaidaIter.close();
     arquivoSaida.close();
 }

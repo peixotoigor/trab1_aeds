@@ -1,12 +1,11 @@
 import random
 
 # Dimensão da matriz
-rows, cols = 10, 10
-
+rows, cols = 100,100
 # Cálculo do total de células e distribuição
 total_cells = rows * cols  
-num_ones = int(total_cells * 0.8)  # arvores saudaveis
-num_zeros = int(total_cells * 0.1) # espaços vazios
+num_ones = int(total_cells * 0.7)  # arvores saudaveis
+num_zeros = int(total_cells * 0.2) # espaços vazios
 num_fours = total_cells - num_ones - num_zeros  # agua
 
 # Geração inicial de uma lista com os valores distribuídos

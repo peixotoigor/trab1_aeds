@@ -8,6 +8,7 @@ void gerarRelatorioFinal(
     int passos,
     bool chegouNaAgua,
     bool animalVivo,
+    int iteracao,
     std::ofstream& arquivo
 ) {
     std::cout << "\n=== MATRIZ FINAL ===" << std::endl;
@@ -20,7 +21,7 @@ void gerarRelatorioFinal(
 
     arquivo << "\nCaminho percorrido pelo animal:" << std::endl;
     for (const auto& pos : caminhoPercorrido) {
-        arquivo << "(" << pos.first << "," << pos.second << ") ";
+        arquivo << "(" << pos.first << "," << pos.second << ")";
     }
     arquivo << std::endl;
 

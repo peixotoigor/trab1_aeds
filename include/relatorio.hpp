@@ -12,6 +12,7 @@ void gerarRelatorioFinal(
     int passos,
     bool chegouNaAgua,
     bool animalVivo,
+    int iteracaoAtual,
     std::ofstream& arquivo
 );
 

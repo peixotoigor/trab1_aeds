@@ -9,6 +9,7 @@ void verificarFogoSobreAnimal(std::vector<std::vector<char>>& matriz,
     int& posAnimalY, 
     int linhas, 
     int colunas,
-    bool& animalVivo);
+    bool& animalVivo,
+    std::vector<std::pair<int, int>>& caminhoPercorrido );
 
 #endif
