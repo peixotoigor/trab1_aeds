@@ -180,9 +180,36 @@ trab1_aeds/
 ```
 
 ## :man_technologist: Implementação
-<a href="arquivo.md" title="Prévia: Este arquivo contém a descrição da simulação">Veja o arquivo completo</a>
 
-A simulação inicia sua execução com o módulo leitorMatriz.cpp, responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
+Antes de iniciar a simulação, é necessário configurar os parâmetros globais disponíveis no arquivo [config.hpp](https://github.com/peixotoigor/trab1_aeds/blob/main/include/config.hpp). Este arquivo centraliza constantes e estruturas que controlam limites operacionais e fatores ambientais, como o vento, permitindo ajustes rápidos e organizados sem alterar o código-fonte principal.
+
+#### Limites Operacionais:
+  * MAX_ITERACOES: Define o número máximo de iterações permitidas (100 por padrão), evitando execuções infinitas e controlando o tempo de simulação.
+  * MAX_PERMANENCIA: Especifica quantas iterações o animal pode permanecer em uma célula segura ('0') antes de ser obrigado a se mover (3 por padrão), equilibrando estratégia de sobrevivência e dinâmica do ambiente.
+
+#### Mapeamento de Direções:
+DIRECOES_VENTO: Associa cada elemento do enum DIRECOES a um deslocamento concreto na matriz (variação de linhas e colunas):
+```cpp
+{-1, 0}, // Cima (linha -1)
+{1, 0},  // Baixo (linha +1)
+{0, -1}, // Esquerda (coluna -1)
+{0, 1}   // Direita (coluna +1)
+```
+
+#### Controle do Vento:
+  * VENTO_ATIVO: Booleano que ativa (true) ou desativa (false) a influência do vento na propagação do fogo.
+  * DIRECOES (Enumeração): Lista direções possíveis para o vento:
+
+```cpp
+// Variável para definir as direções do vento (pode conter várias direções)
+const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO 
+    ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
+    : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
+```
+
+A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando um script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
+
+A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
 
 Em seguida, o Simulador.cpp assume o controle, inicializando a propagação do fogo com uma fila FIFO (queue<pair<int, int>> filaFogo), que prioriza células em chamas na ordem de ignição. A posição inicial do fogo (fogoInicialX, fogoInicialY) é marcada como '2' e adicionada à fila. Paralelamente, o animal é posicionado aleatoriamente usando a função numeroAleatorio() (definida em numAleatorio.cpp), que gera coordenadas dentro dos limites da matriz, garantindo que a simulação comece com condições variáveis. O histórico de movimentos do animal é registrado em um vector<pair<int, int>> caminhoPercorrido, permitindo evitar loops ao priorizar células não visitadas.
 
