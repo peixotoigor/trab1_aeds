@@ -180,9 +180,9 @@ trab1_aeds/
 ```
 
 ## :man_technologist: Implementação
-
+<p align="justify">
 Antes de iniciar a simulação, é necessário configurar os parâmetros globais disponíveis no arquivo [config.hpp](https://github.com/peixotoigor/trab1_aeds/blob/main/include/config.hpp). Este arquivo centraliza constantes e estruturas que controlam limites operacionais e fatores ambientais, como o vento, permitindo ajustes rápidos e organizados sem alterar o código-fonte principal.
-
+</p>
 #### Limites Operacionais:
   * MAX_ITERACOES: Define o número máximo de iterações permitidas (100 por padrão), evitando execuções infinitas e controlando o tempo de simulação.
   * MAX_PERMANENCIA: Especifica quantas iterações o animal pode permanecer em uma célula segura ('0') antes de ser obrigado a se mover (3 por padrão), equilibrando estratégia de sobrevivência e dinâmica do ambiente.
@@ -206,7 +206,7 @@ const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO
     ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
     : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
 ```
-
+</p>
 A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando um script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
 
 A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
@@ -241,7 +241,7 @@ O programa inicia lendo a matriz de entrada, que representa a floresta, a posiç
 Essa matriz pode ser gerada manualmente ou por meio de um script Python fornecido no projeto.
 
 ---
-
+</p>
 #### 2. Inicialização
 
 Variáveis de controle são inicializadas, incluindo:  
