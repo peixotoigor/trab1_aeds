@@ -227,20 +227,20 @@ caminhoPercorrido.push_back({posAnimalX, posAnimalY});
 ```
 Variáveis de controle são inicializadas para acompanhar o número de passos dados pelo animal, o tempo de permanência em local seguro, o número de iterações, o status de vida do animal, se ele chegou à água e se ainda existe área disponível não consumida pelo fogo. Um arquivo de saída é aberto para registrar o progresso da simulação a cada iteração.
 
-O núcleo da simulação é um laço que se repete enquanto o número máximo de iterações não for atingido, o animal estiver vivo e ainda houver área disponível (```iteracaoAtual < MAX_ITERACOES && animalVivo && areaDisponivel```. Em cada iteração, o estado atual da matriz e o caminho do animal são salvos no arquivo de saída.
+O núcleo da simulação é um laço que se repete enquanto o número máximo de iterações não for atingido, o animal estiver vivo e ainda houver área disponível (```iteracaoAtual < MAX_ITERACOES && animalVivo && areaDisponivel```. Em cada iteração, o estado atual da matriz e o caminho do animal são salvos no arquivo de saída. A escrita do estado da matriz é feita usando a função [salvarMatrizComCaminhoIteraçao()]src/relatorio.cpp).
 ```cpp
 salvarMatrizComCaminhoIteracao(matrizOriginal, caminhoPercorrido, arquivoSaidaIter, iteracaoAtual);
 ```
 
-A execução do algorito segue verificando 
-  1. Se o animal estiver sobre uma célula de água, é aplicada uma função que aumenta a umidade ao redor, tornando essas células temporariamente resistentes ao fogo, e o status de chegada à água é atualizado.
+A execução do algoritmo segue verificando 
+  1. Se o animal estiver sobre uma célula de água, é aplicada uma função [aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas)](src/umidade.cpp) que aumenta a umidade ao redor, tornando essas células temporariamente resistentes ao fogo, e o status de chegada à água é atualizado.
 ```cpp
 if (matrizOriginal[posAnimalX][posAnimalY] == '4') {
     aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas);
     chegouNaAgua = true;
 }
 ```
-  2. Caso o animal esteja em uma célula segura e não tenha atingido o tempo máximo de permanência, ele permanece parado e o contador de permanência é incrementado. Caso contrário, o animal busca o melhor movimento possível para uma célula segura, evitando retornar a posições já visitadas e nunca escolhendo células em fogo. Se um destino válido for encontrado, o animal se move, sua nova posição é registrada no caminho, o contador de passos é incrementado e o contador de permanência é reiniciado.
+  2. Caso o animal esteja em uma célula segura e não tenha atingido o tempo máximo de permanência, ele permanece parado e o contador de permanência é incrementado. Caso contrário, o animal busca o melhor movimento possível para uma célula segura utilizando a função [buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido)](src/melhorMovimento.cpp), evitando retornar a posições já visitadas e nunca escolhendo células em fogo. Se um destino válido for encontrado, o animal se move, sua nova posição é registrada no caminho, o contador de passos é incrementado e o contador de permanência é reiniciado.
 ```cpp
 if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_PERMANENCIA) {
     contadorPermanencia++;
@@ -257,7 +257,7 @@ if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_P
     }
 }
 ```
-Após o movimento do animal, o fogo é propagado para novas células de acordo com as regras do simulador, utilizando uma matriz temporária para evitar conflitos de atualização. Depois da propagação, a matriz original é substituída pela matriz temporária. Em seguida, é feita uma verificação: se o animal foi atingido pelo fogo após a propagação, ele tem uma segunda chance de fugir para uma célula ortogonal segura; se conseguir, sua nova posição é registrada, caso contrário, ele é considerado morto e a simulação é encerrada. 
+  3. Após o movimento do animal, o fogo é propagado para novas células de acordo com as regras do simulador através da função[executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo)](src/propagacaoFogo.cpp), utilizando uma matriz temporária para evitar conflitos de atualização. Depois da propagação, a matriz original é substituída pela matriz temporária. Em seguida, é feita uma verificação: se o animal foi atingido pelo fogo após a propagação, ele tem uma segunda chance de fugir para uma célula ortogonal segura ; se conseguir, sua nova posição é registrada, caso contrário, ele é considerado morto e a simulação é encerrada. 
 ```cpp
 std::vector<std::vector<char>> matrizTemp = matrizOriginal;
 // Propagação do fogo (por uma iteração)
@@ -279,7 +279,7 @@ if (matrizOriginal[posAnimalX][posAnimalY] == '2') {
     }
 }
 ```
-O laço também verifica se toda a área foi consumida pelo fogo, encerrando a simulação caso não haja mais células disponíveis para o animal.
+  4. O laço também verifica se toda a área foi consumida pelo fogo usando a função [areaConsumidaPeloFogo(matrizOriginal)](src/conferirFogo.cpp), encerrando a simulação caso não haja mais células disponíveis para o animal.
 ```cpp
         // Verifica se toda a área foi consumida pelo fogo
         areaDisponivel = !areaConsumidaPeloFogo(matrizOriginal);
@@ -289,7 +289,7 @@ O laço também verifica se toda a área foi consumida pelo fogo, encerrando a s
         
         iteracaoAtual++;
 ```
-Ao final da simulação, o estado final da matriz e o caminho completo do animal são salvos, e um relatório final é gerado com as informações relevantes do experimento, como o trajeto percorrido, o número de passos, se o animal sobreviveu ou chegou à água, e o número total de iterações realizadas. Todos os arquivos de saída são devidamente fechados ao término do processo.
+  5. Ao final da simulação, o estado final da matriz e o caminho completo do animal são salvos, e um relatório final é gerado com as informações relevantes do experimento, como o trajeto percorrido, o número de passos, se o animal sobreviveu ou chegou à água, e o número total de iterações realizadas. Todos os arquivos de saída são devidamente fechados ao término do processo.
 ```cpp
 salvarMatrizComCaminhoIteracao(matrizOriginal,caminhoPercorrido, arquivoSaidaIter, iteracaoAtual);
 gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo,iteracaoAtual, arquivoSaidaIter); 
