@@ -23,9 +23,9 @@
 
 :small_blue_diamond: [Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
-:small_blue_diamond: [Casos de teste](#Casos-de-teste)
+:small_blue_diamond: [Metodologia](#Metodologia)
 
-:small_blue_diamond: [Implementação](#Implementacao)
+:small_blue_diamond: [Casos de teste](#Casos-de-teste)
 
 :small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
 
