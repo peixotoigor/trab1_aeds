@@ -32,16 +32,17 @@ No qual resultou na matriz:
 1 1 0 1 1 1 4 4 1 0
 1 1 0 0 1 0 4 1 1 1
 ```
-
+Assim , posição inicial para o fogo foi linha 6 e coluna 1 (lembrando que o indice começa em 0).
 Para facilitar a visualização, definiu-se as seguintes figuras para representar cada estado:
-    
+
     * Espaço vazio (0): ⬜
     * Árvore saúdavel (1): 🌳 
     * Incêndio (2): 🔥
     * Árvore saúdavel (3): 🪵
     * Água (4): 💧
 
-A condição inicial 
+A cposição inicial do agente foi linha 3 e coluna 7. O ambiente de simulação inical pode ser visualizado abaixo:
+```
 🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
 💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
 🌳 🌳 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 
@@ -52,3 +53,4 @@ A condição inicial
 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 🌳 
 🌳 🌳 ⬜ 🌳 🌳 🌳 💧 💧 🌳 ⬜ 
 🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳 
+```
