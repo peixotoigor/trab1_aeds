@@ -1,3 +1,5 @@
+## Caso 2: Sem presença de vento
+
 Para o caso de teste utilizando a configuração sem vento, isto é, o fogo se propaga por todas as direções ortogonais, foram utilizados os seguintes parâmetros que podem ser modificados no arquivo [config.hpp](include/config.hpp).
 ```cpp
 // Número máximo de iterações
