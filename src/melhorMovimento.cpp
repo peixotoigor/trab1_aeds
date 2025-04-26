@@ -15,12 +15,13 @@ std::pair<int, int> buscarMelhorMovimento(
             int nx = posAnimalX + dir.first;
             int ny = posAnimalY + dir.second;
             if (nx >= 0 && nx < linhas && ny >= 0 && ny < colunas) {
-                if (matriz[nx][ny] != '2') {
+                // Não pode fugir para fogo nem para tronco queimado
+                if (matriz[nx][ny] != '2' && matriz[nx][ny] != '3') {
                     return {nx, ny}; // Fuga imediata
                 }
             }
         }
-        return {-1, -1}; // Cercado pelo fogo, não há fuga
+        return {-1, -1}; // Cercado pelo fogo ou queimado, não há fuga
     }
 
     int melhorPrioridade = 1000000;
@@ -41,13 +42,13 @@ std::pair<int, int> buscarMelhorMovimento(
             if (jaVisitado) continue;
 
             char celula = matriz[nx][ny];
-            if (celula == '2') continue; // Não pode ir para fogo
+            // Não pode ir para fogo nem para queimado
+            if (celula == '2' || celula == '3') continue;
 
             int prioridade;
             if (celula == '4') prioridade = 1;
             else if (celula == '0') prioridade = 2;
             else if (celula == '1') prioridade = 3;
-            else if (celula == '3') prioridade = 4;
             else continue;
 
             if (prioridade < melhorPrioridade) {
@@ -65,13 +66,13 @@ std::pair<int, int> buscarMelhorMovimento(
             int ny = posAnimalY + dir.second;
             if (nx >= 0 && nx < linhas && ny >= 0 && ny < colunas) {
                 char celula = matriz[nx][ny];
-                if (celula == '2') continue; // Não pode ir para fogo
+                // Não pode ir para fogo nem para queimado
+                if (celula == '2' || celula == '3') continue;
 
                 int prioridade;
                 if (celula == '4') prioridade = 1;
                 else if (celula == '0') prioridade = 2;
                 else if (celula == '1') prioridade = 3;
-                else if (celula == '3') prioridade = 4;
                 else continue;
 
                 if (prioridade < melhorPrioridade) {

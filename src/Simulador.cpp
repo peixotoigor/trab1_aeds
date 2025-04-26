@@ -45,6 +45,7 @@ void executarSimulacao() {
     caminhoPercorrido.push_back({posAnimalX, posAnimalY});
 
     // Variáveis de controle
+    int contadorVidas = MAX_VIDAS;
     int contadorPermanencia = 0;
     int contadorPassos = 0;
     int iteracaoAtual = 0;
@@ -94,6 +95,11 @@ void executarSimulacao() {
         
         // Segunda chance: se o animal está em fogo após a propagação
         if (matrizOriginal[posAnimalX][posAnimalY] == '2') {
+            contadorVidas--;
+            if (contadorVidas < 0) {
+                animalVivo = false;
+                break;
+            }
             auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
             if (destino.first != -1 && destino.second != -1) {
                posAnimalX = destino.first;

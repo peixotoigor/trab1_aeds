@@ -11,10 +11,20 @@ void gerarRelatorioFinal(
     int iteracao,
     std::ofstream& arquivo
 ) {
-    std::cout << "\n=== MATRIZ FINAL ===" << std::endl;
+    std::cout << "\n--- MATRIZ FINAL ---" << std::endl;
     for (const auto& linha : matriz) {
         for (char celula : linha) {
-            std::cout << celula << " ";
+            if (celula == '2') {
+                std::cout << "🔥 ";
+            } else if (celula == '4') {
+                std::cout << "💧 ";
+            } else if (celula == '1') {
+                std::cout << "🌳 ";
+            } else if (celula == '0') {
+                std::cout << "⬜ ";
+            } else {
+                std::cout << celula << " ";
+            }
         }
         std::cout << std::endl;
     }
@@ -49,23 +59,48 @@ void salvarMatrizComCaminhoIteracao(
         matrizCopia[x][y] = '*';
     }
 
-    arquivo << "=== Iteracao " << iteracao+1 << " ===\n";
-    arquivo << "=Posição Animal "<< " ===\n";
+    arquivo << "--- Iteracao " << iteracao+1 << " ---\n";
+    arquivo << " --- Posição Animal "<< " ---\n";
 
     for (const auto& linha : matrizCopia) {
         for (char celula : linha) {
-            arquivo << celula << " ";
+            if (celula == '2') {
+                arquivo << "🔥 ";
+            } else if (celula == '4') {
+                arquivo << "💧 ";
+            } else if (celula == '1') {
+                arquivo << "🌳 ";
+            } else if (celula == '0') {
+                arquivo << "⬜ ";
+            } else if (celula == '3') {
+                arquivo << "🪵 ";
+            } else if (celula == '*') {
+                arquivo << "🐒 ";
+            } else {
+                arquivo << celula << " ";
+            }
         }
         arquivo << "\n";
     }
     arquivo << "\n";
-    arquivo << "=Posição Fogo "<< " ===\n";
+    arquivo << " --- Posição Fogo "<< " ---\n";
     for (const auto& linha : matriz) {
         for (char celula : linha) {
-            arquivo << celula << " ";
+            if (celula == '2') {
+                arquivo << "🔥 ";
+            } else if (celula == '4') {
+                arquivo << "💧 ";
+            } else if (celula == '1') {
+                arquivo << "🌳 ";
+            } else if (celula == '0') {
+                arquivo << "⬜ ";
+            } else if (celula == '3') {
+                arquivo << "🪵 ";
+            } else {
+                arquivo << celula << " ";
+            }
         }
         arquivo << "\n";
     }
     arquivo << "\n";
-
 }
