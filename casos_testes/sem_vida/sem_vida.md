@@ -129,7 +129,7 @@ O agente entao inicia a procura de uma rota de fuga para escapar do incêncio. C
 
 ```
 
-Em análise verifica-se que as regras de propagação estão sendo realizadas de forma esperada, assim como do agente. Uma suposição que surge partindo da análise do caminho agente está no fato de a prioridade por busca de ambientes que possuam água está sendo estabelicida. Para tal, partindo do ambiente já gerado, com uma modificação manual no ambiente de simualção ([input2.dat](casos_teste/sem_vida/input2.dat)), colocando a propagação mais afastada do agente (9,0), e executou a simulação. 
+Em análise verifica-se que as regras de propagação estão sendo realizadas de forma esperada, assim como do agente. Uma suposição que surge partindo da análise do caminho agente está no fato de a prioridade por busca de ambientes que possuam água está sendo estabelicida. Para tal, partindo do ambiente já gerado, com uma modificação manual no ambiente de simulação ([input2.dat](casos_teste/sem_vida/input2.dat)), colocando a propagação mais afastada do agente (9,0), executou-se a simulação. 
 
 ```
 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 
@@ -144,7 +144,7 @@ Em análise verifica-se que as regras de propagação estão sendo realizadas de
 🔥 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 
 ```
 
-Após 18 iterações, o animal não sobrevive pois atualmente o coódigo não define uma mecanismo adequado para realiazar tal busca. 
+Após 18 iterações, o animal não sobrevive pois atualmente o coódigo não define uma mecanismo adequado para realizar tal busca. 
 
 ```
 --- Iteracao 18 ---
@@ -197,7 +197,7 @@ Forçando a posição do fogo e do agente - a modificação do agente foi realiz
 🔥 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 🌳 
 ```
 
-Após 18 iterações o animal sobrevive, pois enontra uma posição que possui água. 
+Após 18 iterações o animal sobrevive, pois encontra uma posição que possui água. 
 ```
 --- Iteracao 18 ---
  --- Posição Animal  ---
@@ -225,6 +225,6 @@ Após 18 iterações o animal sobrevive, pois enontra uma posição que possui �
 🪵 🪵 🪵 🪵 🪵 🪵 🪵 🪵 🪵 🪵 
 
 ```
-Analisando o caminho do agente: (3,7)(2,7)(1,7)(0,7)(0,6)(1,6)(2,6)(3,6)(4,6)(5,6)(5,7)(4,7)(4,8)(3,8)(2,8)(1,8)(0,8)(0,9). Observa-se que a sobrevivencia do agente está relacionada com a forma com que a configuração de movimento estabelicida na função [buscarMelhorMovimento()](src/melhorMovimento.cpp). A função utiliza a primeira posição de movimento que é (-1,0), associada a um movimento para cima e não a posição que minimiza a distância entre o agente e a localização da água. Logo, analisando a posição incial do agente que está abaixo do local com água, fica evidente que este encontrará a posição com água e devido as regras de permanência e o tamanho da matriz, acabará sobrevivendo.
+Analisando o caminho do agente: (3,7)(2,7)(1,7)(0,7)(0,6)(1,6)(2,6)(3,6)(4,6)(5,6)(5,7)(4,7)(4,8)(3,8)(2,8)(1,8)(0,8)(0,9). Observa-se que a sobrevivencia do agente está relacionada com a forma com que a configuração de movimento foi estabelicida na função [buscarMelhorMovimento()](src/melhorMovimento.cpp). A função utiliza a primeira posição de movimento que é (-1,0), associada a um movimento para cima e não a posição que minimiza a distância entre o agente e a localização da água. Logo, analisando a posição incial do agente que está abaixo do local com água, fica evidente que este encontrará a posição com água e devido as regras de permanência e o tamanho da matriz, acabará sobrevivendo.
 
-Uma forma de contornar esse desafio, é a inclusão de um mecanismo de verificação de distaância (algortimo Manhattan) entre o agente e áreas contendo água para determinar o melhor movimento. Assim, o agente se tornará mais "inteligente", aumentando sua taxa de sobrevivência.
+Uma forma de contornar esse desafio, é a inclusão de um mecanismo de verificação de distaância (algortimo Manhattan, por exemplo) entre o agente e áreas contendo água para determinar o melhor movimento. Assim, o agente se tornará mais "inteligente", aumentando sua taxa de sobrevivência.

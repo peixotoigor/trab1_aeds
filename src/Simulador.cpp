@@ -18,7 +18,7 @@
 void executarSimulacao() {
     // Leitura do arquivo
     leitorMatriz leitor;
-    std::string caminhoArquivo = "../data/matriz.dat";
+    std::string caminhoArquivo = "../data/input.dat";
     std::ofstream arquivoSaida("../data/log.dat");
     leitor.carregarArquivo(caminhoArquivo, arquivoSaida);
     
@@ -37,8 +37,8 @@ void executarSimulacao() {
 
 
     // Posição aleatória do animal
-    //int posAnimalX = 0;
-    //int posAnimalY = 0;
+    //int posAnimalX = 7;
+    //int posAnimalY = 2;
     int posAnimalX = numeroAleatorio(0, linhas)-1;
     int posAnimalY = numeroAleatorio(0, colunas)-1;
     std::vector<std::pair<int, int>> caminhoPercorrido;
