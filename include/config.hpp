@@ -14,7 +14,7 @@ const int MAX_PERMANENCIA = 3;
 const int MAX_VIDAS = 1;
 
 // Ativar ou desativar o ventgo
-const bool VENTO_ATIVO = false;
+const bool VENTO_ATIVO = true;
 
 // Enum para identificar as direções do vento
 enum DIRECOES {
