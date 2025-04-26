@@ -218,7 +218,6 @@ const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO
 ```
 Assim como é possível modificar os parâmetros da simulação, é possível gerar matrizes diferentes com o utilizando o script em Python [geradorMatriz.py](data/geradorMatriz.py). Nele é possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
 
-Código: Dimensão da matriz e cálculo de distribuição
 ```python
 # Dimensão da matriz
 rows, cols = 10, 10
@@ -247,8 +246,8 @@ O núcleo da simulação é um laço que se repete enquanto o número máximo de
 salvarMatrizComCaminhoIteracao(matrizOriginal, caminhoPercorrido, arquivoSaidaIter, iteracaoAtual);
 ```
 
-A execução do algoritmo segue verificando 
-  1. Se o animal estiver sobre uma célula de água, é aplicada uma função [aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas)](src/umidade.cpp) que aumenta a umidade ao redor, tornando essas células temporariamente resistentes ao fogo, e o status de chegada à água é atualizado.
+A execução do algoritmo segue verificando:
+  1. Se o animal estiver sobre uma célula de água, é aplicada a função [aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas)](src/umidade.cpp) que aumenta a umidade ao redor, tornando essas células temporariamente resistentes ao fogo, e o status de chegada à água é atualizado.
 ```cpp
 if (matrizOriginal[posAnimalX][posAnimalY] == '4') {
     aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas);
@@ -272,7 +271,7 @@ if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_P
     }
 }
 ```
-  3. Após o movimento do animal, o fogo é propagado para novas células de acordo com as regras do simulador através da função[executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo)](src/propagacaoFogo.cpp), utilizando uma matriz temporária para evitar conflitos de atualização. Depois da propagação, a matriz original é substituída pela matriz temporária. Em seguida, é feita uma verificação: se o animal foi atingido pelo fogo após a propagação, ele tem uma segunda chance de fugir para uma célula ortogonal segura ; se conseguir, sua nova posição é registrada, caso contrário, ele é considerado morto e a simulação é encerrada. 
+  3. Após o movimento do animal, o fogo é propagado para novas células de acordo com as regras do simulador através da função[executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo)](src/propagacaoFogo.cpp), utilizando uma matriz temporária para evitar conflitos de atualização. Depois da propagação, a matriz original é substituída pela matriz temporária. Em seguida, é feita uma verificação: se o animal foi atingido pelo fogo após a propagação, ele tem uma segunda chance de fugir para uma célula ortogonal segura; se conseguir, sua nova posição é registrada, caso contrário, ele é considerado morto e a simulação é encerrada. 
 ```cpp
 std::vector<std::vector<char>> matrizTemp = matrizOriginal;
 // Propagação do fogo (por uma iteração)
