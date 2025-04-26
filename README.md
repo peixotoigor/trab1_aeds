@@ -23,9 +23,9 @@
 
 :small_blue_diamond: [Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
 
-:small_blue_diamond: [Casos de teste](#Casos-de-teste)
+:small_blue_diamond: [Metodologia](#Metodologia)
 
-:small_blue_diamond: [Implementação](#Implementacao)
+:small_blue_diamond: [Casos de teste](#Casos-de-teste)
 
 :small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
 
@@ -133,11 +133,6 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blueviolet)](https://code.visualstudio.com/docs/?dv=linux64_deb)
 [![Sistema Operacional](https://img.shields.io/badge/ISO-Ubuntu%20Linux%20WSL%2022.04-red)](https://ubuntu.com/wsl)
 
-##  :test_tube:  Casos de teste 
-Para verificar o comportamento da simulação foram testados os seguintes casos
-  * [Propagação sem a influência do vento]()
-  * [Propagação com a influência do vento]()
-  * [Segunda chance]()
 
 ## :file_folder: Estrutura Geral do Projeto
 
@@ -186,6 +181,18 @@ Antes de iniciar a simulação, é necessário configurar os parâmetros globais
 #### Limites Operacionais:
   * MAX_ITERACOES: Define o número máximo de iterações permitidas (100 por padrão), evitando execuções infinitas e controlando o tempo de simulação.
   * MAX_PERMANENCIA: Especifica quantas iterações o animal pode permanecer em uma célula segura ('0') antes de ser obrigado a se mover (3 por padrão), equilibrando estratégia de sobrevivência e dinâmica do ambiente.
+  *  MAX_VIDA: Especifica quantas vidas o agente pode ter durante a simulação.
+```cpp
+// Número máximo de iterações
+const int MAX_ITERACOES = 1000;
+
+// Número máximo de permanência
+const int MAX_PERMANENCIA = 3;
+
+// Número máximo de vidas
+const int MAX_VIDAS = 1;
+
+```
 
 #### Mapeamento de Direções:
 DIRECOES_VENTO: Associa cada elemento do enum DIRECOES a um deslocamento concreto na matriz (variação de linhas e colunas):
@@ -201,103 +208,116 @@ DIRECOES_VENTO: Associa cada elemento do enum DIRECOES a um deslocamento concret
   * DIRECOES (Enumeração): Lista direções possíveis para o vento:
 
 ```cpp
+// Ativar ou desativar o ventgo
+const bool VENTO_ATIVO = true;
+
 // Variável para definir as direções do vento (pode conter várias direções)
 const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO 
     ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
     : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
 ```
+Assim como é possível modificar os parâmetros da simulação, é possível gerar matrizes diferentes com o utilizando o script em Python [geradorMatriz.py](data/geradorMatriz.py). Nele é possível alterar o tamanho da malha, a distribuição da quantidade de espaços vazios, quantidade de árvores saudáveis, espaços vazios e presença de água. Para modificar, basta alterar os valores multiplicadores das funções associadas.
 
-A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando um script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
+```python
+# Dimensão da matriz
+rows, cols = 10, 10
 
-A validação garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um vector<vector<char>>, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices.
+# Cálculo do total de células e distribuição
+total_cells = rows * cols  
+num_ones = int(total_cells * 0.8)  # arvores saudaveis
+num_zeros = int(total_cells * 0.1) # espaços vazios
+num_fours = total_cells - num_ones - num_zeros  # agua
+```
+Para maior clareza da descrição a seguir, é interessante acompanhar o [diagrama](diagrama.md) do funcionamento completo do código.
 
-Em seguida, o Simulador.cpp assume o controle, inicializando a propagação do fogo com uma fila FIFO (queue<pair<int, int>> filaFogo), que prioriza células em chamas na ordem de ignição. A posição inicial do fogo (fogoInicialX, fogoInicialY) é marcada como '2' e adicionada à fila. Paralelamente, o animal é posicionado aleatoriamente usando a função numeroAleatorio() (definida em numAleatorio.cpp), que gera coordenadas dentro dos limites da matriz, garantindo que a simulação comece com condições variáveis. O histórico de movimentos do animal é registrado em um vector<pair<int, int>> caminhoPercorrido, permitindo evitar loops ao priorizar células não visitadas.
+A simulação inicia sua execução com o módulo [leitorMatriz.cpp](https://github.com/peixotoigor/trab1_aeds/blob/main/src/leitorMatriz.cpp), responsável por carregar e validar o arquivo input.dat, que contém a configuração inicial do ambiente. Esse arquivo inclui dados (número de linhas, colunas, coordenadas iniciais do fogo) e uma matriz de caracteres representando os estados das células: '0' (seguro), '1' (árvore saudável), '2' (fogo ativo), '3' (queimado) e '4' (água). É valido ressaltar que o arquivo input.dat pode ser gerado utilizando o script em Python disponível em [geradorMatriz.py](https://github.com/peixotoigor/trab1_aeds/blob/main/data/geradorMatriz.py) 
 
-O loop principal, limitado por MAX_ITERACOES, executa as seguintes etapas iterativamente:
+Durante a leitura da matriz é realizada uma validação que garante que todas as células contenham valores válidos, abortando a simulação em caso de erro e registrando detalhes em log.dat. Após a leitura, a matriz é armazenada em um ```vector<vector<char>>```, estrutura escolhida por sua flexibilidade para redimensionamento dinâmico e acesso rápido via índices. Além disso, é armazenada a posição inicial do fogo na matriz e inserida em uma fila FIFO (```queue<pair<int, int>> filaFogo```) que organiza as células em chamas por ordem de ignição para controlar a propagação do fogo ao longo das iterações. Em seguida, a posição inicial do agente (animal) é sorteada aleatoriamente usando a função [numAleatorio](src/numAleatorio.cpp) que gera um número dentro dos limites da matriz, e essa posição é registrada em um vetor que irá armazenar todo o caminho percorrido pelo animal durante a simulação. Uma estratégia utilizada para garantir que a posição do fogo e do animal não coincidam foi retirar uma unidade da posição do animal. 
+```cpp
+int posAnimalX = numeroAleatorio(0, linhas)-1;
+int posAnimalY = numeroAleatorio(0, colunas)-1;
+std::vector<std::pair<int, int>> caminhoPercorrido;
+caminhoPercorrido.push_back({posAnimalX, posAnimalY});
+```
+Variáveis de controle são inicializadas para acompanhar o número de passos dados pelo animal, o tempo de permanência em local seguro, o número de iterações, o status de vida do animal, se ele chegou à água e se ainda existe área disponível não consumida pelo fogo. Um arquivo de saída é aberto para registrar o progresso da simulação a cada iteração.
 
-Registro do Estado: relatorio.cpp salva a matriz em output.dat, substituindo células do caminho do animal por * para visualização clara.
+O núcleo da simulação é um laço que se repete enquanto o número máximo de iterações não for atingido, o animal estiver vivo e ainda houver área disponível (```iteracaoAtual < MAX_ITERACOES && animalVivo && areaDisponivel```. Em cada iteração, o estado atual da matriz e o caminho do animal são salvos no arquivo de saída. A escrita do estado da matriz é feita usando a função [salvarMatrizComCaminhoIteraçao()]src/relatorio.cpp).
+```cpp
+salvarMatrizComCaminhoIteracao(matrizOriginal, caminhoPercorrido, arquivoSaidaIter, iteracaoAtual);
+```
 
-Verificação de Água: Se o animal está em '4', umidade.cpp é acionado, convertendo a célula de água em '0' (segura) e regenerando células adjacentes: fogo ('2') vira '1' (extinção local), e outras (exceto '4') são marcadas como saudáveis.
+A execução do algoritmo segue verificando:
+  1. Se o animal estiver sobre uma célula de água, é aplicada a função [aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas)](src/umidade.cpp) que aumenta a umidade ao redor, tornando essas células temporariamente resistentes ao fogo, e o status de chegada à água é atualizado.
+```cpp
+if (matrizOriginal[posAnimalX][posAnimalY] == '4') {
+    aplicarUmidade(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas);
+    chegouNaAgua = true;
+}
+```
+  2. Caso o animal esteja em uma célula segura e não tenha atingido o tempo máximo de permanência, ele permanece parado e o contador de permanência é incrementado. Caso contrário, o animal busca o melhor movimento possível para uma célula segura utilizando a função [buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido)](src/melhorMovimento.cpp), evitando retornar a posições já visitadas e nunca escolhendo células em fogo. Se um destino válido for encontrado, o animal se move, sua nova posição é registrada no caminho, o contador de passos é incrementado e o contador de permanência é reiniciado.
+```cpp
+if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_PERMANENCIA) {
+    contadorPermanencia++;
+} else {
 
-Movimentação do Animal: melhorMovimento.cpp avalia as 4 direções ortogonais (DIRECOES_ORTOGONAIS), atribuindo prioridades: '4' (prioridade 1) > '0' (2) > '1' (3) > '3' (4). Células em fogo ('2') são ignoradas, e células não visitadas são priorizadas. Se todas as opções forem visitadas, o algoritmo permite revisitar células com menor prioridade. A nova posição é adicionada ao caminhoPercorrido, e o contador de passos é incrementado.
+    // Movimentação do animal
+    auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
+     if (destino.first != -1 && destino.second != -1) {
+        posAnimalX = destino.first;
+        posAnimalY = destino.second;
+        caminhoPercorrido.push_back(destino);
+        contadorPassos++;
+        contadorPermanencia = 0;
+    }
+}
+```
+  3. Após o movimento do animal, o fogo é propagado para novas células de acordo com as regras do simulador através da função[executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo)](src/propagacaoFogo.cpp), utilizando uma matriz temporária para evitar conflitos de atualização. Depois da propagação, a matriz original é substituída pela matriz temporária. Em seguida, é feita uma verificação: se o animal foi atingido pelo fogo após a propagação, ele tem uma segunda chance de fugir para uma célula ortogonal segura; se conseguir, sua nova posição é registrada, caso contrário, ele é considerado morto e a simulação é encerrada. 
+```cpp
+std::vector<std::vector<char>> matrizTemp = matrizOriginal;
+// Propagação do fogo (por uma iteração)
+executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo);
 
-Propagação do Fogo: propagacaoFogo.cpp processa a fila de fogo, convertendo cada '2' em '3' (queimado) e propagando chamas para células '1' adjacentes, seguindo as direções do vento (VENTO_DIRECOES). Novos focos ('2') são enfileirados para processamento na próxima iteração.
+// Após a propagação, substitua a matriz original pela cópia
+ matrizOriginal = matrizTemp;
+        
+// Segunda chance: se o animal está em fogo após a propagação
+if (matrizOriginal[posAnimalX][posAnimalY] == '2') {
+   auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
+    if (destino.first != -1 && destino.second != -1) {
+       posAnimalX = destino.first;
+       posAnimalY = destino.second;
+       caminhoPercorrido.push_back(destino);
+    } else {
+           animalVivo = false;
+           break;
+    }
+}
+```
+  4. O laço também verifica se toda a área foi consumida pelo fogo usando a função [areaConsumidaPeloFogo(matrizOriginal)](src/conferirFogo.cpp), encerrando a simulação caso não haja mais células disponíveis para o animal.
+```cpp
+        // Verifica se toda a área foi consumida pelo fogo
+        areaDisponivel = !areaConsumidaPeloFogo(matrizOriginal);
+        if (!areaDisponivel) {
+            break; // Encerra a simulação, pois não há mais fogo para propagar
+        }
+        
+        iteracaoAtual++;
+```
+  5. Ao final da simulação, o estado final da matriz e o caminho completo do animal são salvos, e um relatório final é gerado com as informações relevantes do experimento, como o trajeto percorrido, o número de passos, se o animal sobreviveu ou chegou à água, e o número total de iterações realizadas. Todos os arquivos de saída são devidamente fechados ao término do processo.
+```cpp
+salvarMatrizComCaminhoIteracao(matrizOriginal,caminhoPercorrido, arquivoSaidaIter, iteracaoAtual);
+gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo,iteracaoAtual, arquivoSaidaIter); 
+arquivoSaidaIter.close();
+arquivoSaida.close();
+```
 
-Verificação de Sobrevivência: conferirFogo.cpp checa se o animal está em '2'. Em caso positivo, tenta movê-lo para células seguras ('0', '1', '4'). Se falhar, define animalVivo = false, encerrando o loop.
 
-As condições de parada são verificadas a cada ciclo:
+##  :test_tube:  Casos de teste 
+Para verificar o comportamento da simulação foram testados os seguintes casos
+  * [Propagação sem a influência do vento]()
+  * [Propagação com a influência do vento]()
+  * [Segunda chance]()
 
-Fogo Extinto: A função areaConsumidaPeloFogo() (em Simulador.cpp) varre a matriz em busca de '2'. Se ausentes, a simulação termina.
-
-Morte do Animal: Caso cercado por fogo sem rotas de fuga.
-
-Limite de Iterações: MAX_ITERACOES é atingido.
-
-Ao final, relatorio.cpp gera um relatório em log.dat com o caminho completo, número de passos, status de sobrevivência e matriz final. Já output.dat armazena snapshots iterativos, permitindo análise pós-simulação. A escolha de estruturas como queue para o fogo (FIFO) e vector para o caminho equilibra eficiência e simplicidade, enquanto a modularidade do código facilita a extensão
-Veja o diagrama completo [aqui](diagrama.md)
-#### 1. Início e Leitura de Dados
-
-O programa inicia lendo a matriz de entrada, que representa a floresta, a posição inicial do fogo e demais parâmetros necessários para a simulação.  
-Essa matriz pode ser gerada manualmente ou por meio de um script Python fornecido no projeto.
-
----
-
-#### 2. Inicialização
-
-Variáveis de controle são inicializadas, incluindo:  
-- A posição do animal.  
-- A fila de propagação do fogo.  
-- Contadores de iteração.  
-- Flags de status (animal vivo, chegou à água, etc.).  
-- Estruturas para registrar o caminho percorrido pelo animal.
-
----
-
-#### 3. Loop Principal da Simulação
-
-O programa entra em um laço principal que representa o avanço do tempo na simulação. Este laço continua até que uma **condição de parada** seja atingida:  
-- Animal morto.  
-- Toda a área consumida pelo fogo.  
-- Número máximo de iterações.
-
-#### **Dentro de cada iteração do loop**:
-
-##### 3.1 Movimentação do Animal:  
-- O animal avalia as células vizinhas e decide seu próximo movimento com base em prioridades: água, área segura, árvore saudável, etc.  
-- Evita retornar para posições já visitadas, exceto em situações de borda.
-
-##### 3.2 Propagação do Fogo:  
-- O fogo se propaga para células vizinhas de acordo com as regras do simulador, utilizando uma fila para processar apenas as células em chamas.
-
-##### 3.3 Verificação de Estado do Animal:  
-- O programa verifica se o animal foi atingido pelo fogo.  
-- Se possível, tenta movê-lo para uma célula segura.  
-- Caso contrário, o animal é considerado morto.
-
-##### 3.4 Verificação de Condições de Parada:  
-- O simulador checa se o animal morreu.  
-- Se toda a área foi consumida pelo fogo.  
-- Se o número máximo de iterações foi atingido.  
-- Caso qualquer uma dessas condições seja satisfeita, o loop é encerrado.
-
-##### 3.5 Salvamento do Estado Atual:  
-- O estado da matriz e o caminho percorrido pelo animal são registrados para análise posterior.
-
----
-
-#### 4. Geração do Relatório Final
-
-Após o término do loop principal, o programa gera um relatório final contendo:  
-- O estado final da matriz.  
-- O caminho percorrido pelo animal.  
-- O número de passos.  
-- O status final do animal (sobreviveu, morreu, chegou à água, etc.).
-
----
-
-####  5. Término
-
-O programa encerra sua execução, deixando os resultados disponíveis nos arquivos de saída para análise.
 
 ## :keyboard: Instalação e Configuração 
 
