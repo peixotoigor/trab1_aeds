@@ -366,9 +366,9 @@ $$
 
 Esta busca linear dentro do loop de simulação é o principal contribuinte para a complexidade quadrática geral.
 
-Outros módulos como `propagacaoFogo.cpp` (Tempo $$O(n \times linhas \times colunas)$$, Espaço $O(linhas \times colunas)$) e a gravação de relatórios em `relatorio.cpp` (Tempo $O(n \times linhas \times colunas + n)$) também podem se tornar custosos para matrizes grandes, mas a dependência $O(n^2)$ do movimento do agente é um ponto crítico para o número de iterações.
+Outros módulos como `propagacaoFogo.cpp` (Tempo $O(n \times linhas \times colunas)$, Espaço $O(linhas \times colunas)$) e a gravação de relatórios em `relatorio.cpp` (Tempo $O(n \times linhas \times colunas + n)$) também podem se tornar custosos para matrizes grandes, mas a dependência $O(n^2)$ do movimento do agente é um ponto crítico para o número de iterações. Cada iteração de `n` resulta em um custo acumulado de $O(n^2)$.
 
-Cada iteração de `n` resulta em um custo acumulado de O(n²).
+
 
 #### 3. Próximos Passos
 
