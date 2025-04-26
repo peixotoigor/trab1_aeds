@@ -24,7 +24,7 @@ fire_position = (random.randint(0, rows - 1), random.randint(0, cols - 1))
 matrix[fire_position[0]][fire_position[1]] = 2
 
 try:
-    file_name = "../data/matriz.dat"
+    file_name = "../data/input.dat"
     with open(file_name, "w") as file:
         file.write(f"{rows} {cols} {fire_position[0]} {fire_position[1]}\n")
         for row in matrix:
