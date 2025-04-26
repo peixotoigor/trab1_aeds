@@ -13,31 +13,6 @@
   <img src="https://github.com/user-attachments/assets/3fc3f4ea-1df9-461b-9073-ebe80a3b204c" alt="Logo_projeto" width="300" />
 </div>
 
-## Tópicos 
-
-:small_blue_diamond: [Introdução](#Introduçao)
-
-:small_blue_diamond: [Descrição do projeto](#descrição-do-projeto)
-
-:small_blue_diamond: [Ambiente de Criação](#Ambiente-de-criacao)
-
-:small_blue_diamond: [Estutura Geral do Projeto](#Estrutura-Geral-do-Projeto)
-
-:small_blue_diamond: [Metodologia](#Metodologia)
-
-:small_blue_diamond: [Casos de teste](#Casos-de-teste)
-
-:small_blue_diamond: [Instalação e Configuração](#Instalação-e-Configuracao)
-
-:small_blue_diamond: [Desenvolvedores do Projeto](#Desenvolvedores-do-Projeto)
-
-:small_blue_diamond: [Ambiente de teste](#Ambiente-de-teste)
-
-:small_blue_diamond: [Recursos Utilizados](#Recursos-Utilizados)
-
-:small_blue_diamond: [Licença](#Licença)
-
-
 ## :page_with_curl: Introdução
 <p align="justify">
 Incêndios florestais e urbanos são fenômenos que trazem consigo graves consequências ambientais, sociais e econômicas. A medida de como um incêndio se espalha, conhecida como taxa de propagação, é fundamental para prever o comportamento do fogo e implementar as respostas adequadas. Essa taxa pode ser afetada por uma variedade de fatores, incluindo condições climáticas, tipo de vegetação, umidade do solo, e características do terreno.
