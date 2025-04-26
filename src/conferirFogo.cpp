@@ -6,7 +6,8 @@ void verificarFogoSobreAnimal(std::vector<std::vector<char>>& matriz,
     int& posAnimalY, 
     int linhas, 
     int colunas,
-    bool& animalVivo){
+    bool& animalVivo,
+    std::vector<std::pair<int, int>>& caminhoPercorrido ){
     
     if(matriz[posAnimalX][posAnimalY] != '2'){
         return; //Animal não foi atingido
@@ -20,6 +21,7 @@ void verificarFogoSobreAnimal(std::vector<std::vector<char>>& matriz,
             if (celula == '0' || celula == '1' || celula == '4') {
                 posAnimalX = dx;
                 posAnimalY = dy;
+                caminhoPercorrido.push_back({dx, dy}); 
                 return;
             }
         }

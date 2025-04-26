@@ -2,11 +2,10 @@ import random
 
 # Dimensão da matriz
 rows, cols = 10, 10
-
 # Cálculo do total de células e distribuição
-total_cells = rows * cols  
-num_ones = int(total_cells * 0.8)  # arvores saudaveis
-num_zeros = int(total_cells * 0.1) # espaços vazios
+total_cells = rows * cols
+num_ones = int(total_cells * 0.7)  # arvores saudaveis
+num_zeros = int(total_cells * 0.2)  # espaços vazios
 num_fours = total_cells - num_ones - num_zeros  # agua
 
 # Geração inicial de uma lista com os valores distribuídos
@@ -25,7 +24,7 @@ fire_position = (random.randint(0, rows - 1), random.randint(0, cols - 1))
 matrix[fire_position[0]][fire_position[1]] = 2
 
 try:
-    file_name = "../data/matriz.dat"
+    file_name = "../data/input.dat"
     with open(file_name, "w") as file:
         file.write(f"{rows} {cols} {fire_position[0]} {fire_position[1]}\n")
         for row in matrix:

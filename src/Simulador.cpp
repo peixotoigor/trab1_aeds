@@ -5,6 +5,7 @@
 #include "conferirFogo.hpp"
 #include "melhorMovimento.hpp"
 #include "propagacaoFogo.hpp"
+#include "areaConsumida.hpp"
 #include "relatorio.hpp"
 
 #include <string>	
@@ -13,18 +14,6 @@
 #include <fstream>
 #include <vector>
 
-// Verifica se toda a área foi consumida pelo fogo (não há mais '1' ou '2')
-bool areaConsumidaPeloFogo(const std::vector<std::vector<char>>& matriz) {
-    for (const auto& linha : matriz) {
-        for (char celula : linha) {
-           if (celula == '2'|| celula=='1') {
-           //if (celula == '2') {
-                return false; // Ainda há fogo
-            }
-        }
-    }
-    return true; // Tudo foi queimado ou virou outro estado
-}
 
 void executarSimulacao() {
     // Leitura do arquivo
@@ -46,15 +35,17 @@ void executarSimulacao() {
     filaFogo.push({fogoInicialX, fogoInicialY});
     matrizOriginal[fogoInicialX][fogoInicialY] = '2';
 
+
     // Posição aleatória do animal
-    //int posAnimalX = 0;
-    //int posAnimalY = 0;
-    int posAnimalX = numeroAleatorio(0, linhas - 1);
-    int posAnimalY = numeroAleatorio(0, colunas - 1);
+    //int posAnimalX = 7;
+    //int posAnimalY = 2;
+    int posAnimalX = numeroAleatorio(0, linhas)-1;
+    int posAnimalY = numeroAleatorio(0, colunas)-1;
     std::vector<std::pair<int, int>> caminhoPercorrido;
     caminhoPercorrido.push_back({posAnimalX, posAnimalY});
 
     // Variáveis de controle
+    int contadorVidas = MAX_VIDAS;
     int contadorPermanencia = 0;
     int contadorPassos = 0;
     int iteracaoAtual = 0;
@@ -62,7 +53,7 @@ void executarSimulacao() {
     bool chegouNaAgua = false;
     bool areaDisponivel = true;
 
-    std::ofstream arquivoSaidaIter("../data/saida.dat");
+    std::ofstream arquivoSaidaIter("../data/output.dat");
 
     // Loop principal da simulação
     while (iteracaoAtual < MAX_ITERACOES && animalVivo && areaDisponivel){
@@ -82,6 +73,7 @@ void executarSimulacao() {
         if (matrizOriginal[posAnimalX][posAnimalY] == '0' && contadorPermanencia < MAX_PERMANENCIA) {
             contadorPermanencia++;
         } else {
+
             // Movimentação do animal
             auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
             if (destino.first != -1 && destino.second != -1) {
@@ -93,14 +85,30 @@ void executarSimulacao() {
             }
         }
 
+        std::vector<std::vector<char>> matrizTemp = matrizOriginal;
+
         // Propagação do fogo (por uma iteração)
-        executarFogoIteracao(matrizOriginal, linhas, colunas, filaFogo);
+        executarFogoIteracao(matrizTemp, linhas, colunas, filaFogo);
 
-
-        // Verifica se o animal foi atingido pelo fogo
-        verificarFogoSobreAnimal(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, animalVivo);
-        if (!animalVivo) {
-            break;
+        // Após a propagação, substitua a matriz original pela cópia
+        matrizOriginal = matrizTemp;
+        
+        // Segunda chance: se o animal está em fogo após a propagação
+        if (matrizOriginal[posAnimalX][posAnimalY] == '2') {
+            contadorVidas--;
+            if (contadorVidas < 0) {
+                animalVivo = false;
+                break;
+            }
+            auto destino = buscarMelhorMovimento(matrizOriginal, posAnimalX, posAnimalY, linhas, colunas, caminhoPercorrido);
+            if (destino.first != -1 && destino.second != -1) {
+               posAnimalX = destino.first;
+               posAnimalY = destino.second;
+               caminhoPercorrido.push_back(destino);
+            } else {
+                animalVivo = false;
+                break;
+            }
         }
         
         // Verifica se toda a área foi consumida pelo fogo
@@ -118,7 +126,7 @@ void executarSimulacao() {
         caminhoPercorrido,
         arquivoSaidaIter, 
         iteracaoAtual);
-    gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo, arquivoSaidaIter); 
+    gerarRelatorioFinal(matrizOriginal, caminhoPercorrido, contadorPassos, chegouNaAgua, animalVivo,iteracaoAtual, arquivoSaidaIter); 
     arquivoSaidaIter.close();
     arquivoSaida.close();
 }

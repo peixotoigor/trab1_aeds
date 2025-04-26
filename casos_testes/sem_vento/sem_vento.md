@@ -1,6 +1,6 @@
-## Caso 1: Sem presença de vento
+## Caso 2: Sem presença de vento
 
-Para o caso de teste utilizando a configuração com vento, isto é, o fogo se propaga por direções determinadas (ABAIXO E DIREITA), foram utilizados os seguintes parâmetros que podem ser modificados no arquivo [config.hpp](include/config.hpp).
+Para o caso de teste utilizando a configuração sem vento, isto é, o fogo se propaga por todas as direções ortogonais, foram utilizados os seguintes parâmetros que podem ser modificados no arquivo [config.hpp](include/config.hpp).
 ```cpp
 // Número máximo de iterações
 const int MAX_ITERACOES = 100;
@@ -12,12 +12,7 @@ const int MAX_PERMANENCIA = 3;
 const int MAX_VIDAS = 1;
 
 // Ativar ou desativar o ventgo
-const bool VENTO_ATIVO = true;
-
-const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO 
-    ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
-    : std::vector<DIRECOES>{ESQUERDA, DIREITA, ACIMA, ABAIXO}; // Todas as direções quando SEM_VENTO
-
+const bool VENTO_ATIVO = false;
 ```
 A matriz utilizada, no tamanho 10x10, gerada através do script [geradorMatriz.pu](data/geradorMatriz.py) foi configurada para que 70% da aréa fosse composta por árvores saudáveis, 20% por espaços vazios e 10% contendo água:
 ```pyhton
@@ -61,7 +56,7 @@ A cposição inicial do agente, representado por 🐒, foi estabelecida aleatori
 🌳 🌳 ⬜ 🌳 🌳 🌳 💧 💧 🌳 ⬜ 
 🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳 
 ```
-Na iteração 2, pode-se verificar o o fogo se espalhando nas direções estabelicidas e respeitando as regras de simualçao:
+Na iteração 2, pode-se verificar o o fogo se espalhando nas direções ortognais e respeitando as regras de simualçao:
 ```
 🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
 💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
@@ -69,39 +64,40 @@ Na iteração 2, pode-se verificar o o fogo se espalhando nas direções estabel
 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 🐒 💧 🌳 
 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 
 ⬜ ⬜ 🌳 ⬜ 🌳 🌳 ⬜ 🌳 🌳 🌳 
-🌳 🪵 🔥 ⬜ 🌳 🌳 ⬜ ⬜ 🌳 🌳 
+🔥 🪵 🔥 ⬜ 🌳 🌳 ⬜ ⬜ 🌳 🌳 
 🌳 🔥 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 🌳 
 🌳 🌳 ⬜ 🌳 🌳 🌳 💧 💧 🌳 ⬜ 
-🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳  
+🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳 
 ```
 
-No arquivo output.dat contém o mapeamento da propagação do fogo e do animal separadamente, afim de melhor compreender a dinâmica da simulação. Verifica-se que após 7 iterações o fogo consome as regiões disponíveis e o animal sobrevive, indo para uma região que possui água. A restauração da área consumida pelo fogo (aplicação da umidade) é realizada com sucesso. O Caminho percorrido pelo animal: (3,7)(3,8).
+No arquivo output.dat contém o mapeamento da propagação do fogo e do animal separadamente, afim de melhor compreender a dinâmica da simulação. Verifica-se que após 20 iterações o fogo consome as regiões disponíveis e o animal sobrevive, indo para uma região que possui água. A restauração da área consumida pelo fogo (aplicação da umidade) é realizada com sucesso. O Caminho percorrido pelo animal: (3,7)(3,8)(4,8)(5,8)(6,8)(6,7)(7,7).
 
 ```
---- Iteracao 7 ---
+--- Iteracao 20 ---
  --- Posição Animal  ---
-🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
-💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
-🌳 🌳 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 
-🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 🐒 🐒 🌳 
-🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 
-⬜ ⬜ 🌳 ⬜ 🌳 🌳 ⬜ 🌳 🌳 🌳 
-🌳 🪵 🪵 ⬜ 🌳 🌳 ⬜ ⬜ 🌳 🌳 
-🌳 🪵 🪵 🪵 ⬜ 🌳 🌳 💧 🌳 🌳 
-🌳 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🌳 ⬜ 
-🌳 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🌳 🌳 🌳 
+🪵 🪵 🪵 ⬜ 🪵 ⬜ 🌳 🌳 💧 🌳 
+💧 🪵 🪵 🪵 🪵 🪵 ⬜ 🌳 💧 💧 
+🪵 🪵 🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🐒 🐒 🪵 
+🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🐒 🪵 
+⬜ ⬜ 🪵 ⬜ 🪵 🪵 ⬜ 🪵 🐒 🪵 
+🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🐒 🐒 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🌳 🐒 🌳 🪵 
+🪵 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🪵 ⬜ 
+🪵 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🪵 🪵 🪵 
 
  --- Posição Fogo  ---
-🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
-💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
-🌳 🌳 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 
-🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 🌳 ⬜ 🌳 
-🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 
-⬜ ⬜ 🌳 ⬜ 🌳 🌳 ⬜ 🌳 🌳 🌳 
-🌳 🪵 🪵 ⬜ 🌳 🌳 ⬜ ⬜ 🌳 🌳 
-🌳 🪵 🪵 🪵 ⬜ 🌳 🌳 💧 🌳 🌳 
-🌳 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🌳 ⬜ 
-🌳 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🌳 🌳 🌳 
+🪵 🪵 🪵 ⬜ 🪵 ⬜ 🌳 🌳 💧 🌳 
+💧 🪵 🪵 🪵 🪵 🪵 ⬜ 🌳 💧 💧 
+🪵 🪵 🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🪵 🪵 🪵 
+🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🪵 
+⬜ ⬜ 🪵 ⬜ 🪵 🪵 ⬜ 🪵 🪵 🪵 
+🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🌳 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🌳 ⬜ 🌳 🪵 
+🪵 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🪵 ⬜ 
+🪵 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🪵 🪵 🪵 
+
 ```
 
 Em análise verifica-se que as regras de propagação estão sendo realizadas de forma esperada, assim como do agente. 

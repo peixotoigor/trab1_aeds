@@ -10,6 +10,9 @@ const int MAX_ITERACOES = 100;
 // Número máximo de permanência
 const int MAX_PERMANENCIA = 3;
 
+// Número máximo de vidas
+const int MAX_VIDAS = 1;
+
 // Ativar ou desativar o ventgo
 const bool VENTO_ATIVO = false;
 
