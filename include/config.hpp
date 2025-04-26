@@ -5,7 +5,7 @@
 #include <utility>
 
 // Número máximo de iterações
-const int MAX_ITERACOES = 1000;
+const int MAX_ITERACOES = 100;
 
 // Número máximo de permanência
 const int MAX_PERMANENCIA = 3;
