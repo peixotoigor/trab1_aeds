@@ -323,56 +323,77 @@ Para verificar o comportamento da simulação foram testados os seguintes casos
 Os testes realizados envolveram uma simulação de incêndio florestal, na qual um agente (representado por 🐒) tenta sobreviver à propagação do fogo (🔥). As simulações foram conduzidas em uma matriz 10x10 composta por diferentes tipos de células: árvores saudáveis (🌳), que são inflamáveis; espaços vazios (⬜), que não propagam o fogo; água (💧), que serve como refúgio e barreira contra o fogo; e madeira queimada (🪵), resultado de uma árvore que já foi consumida pelas chamas e "apagou". As configurações das matrizes foram as seguintes:
 
   * **Para o caso sem a influência do vento**:  com 70% de árvores saudáveis, 20% de espaços vazios e 10% de água. Essa distribuição resultou em um ambiente mais heterogêneo e com menor concentração de material combustível contínuo, com os espaços vazios atuando como barreiras naturais e as áreas de água distribuídas oferecendo múltiplos potenciais refúgios para o agente. A configuração de propagação permaneceu sem vento (VENTO_ATIVO = false), implicando em espalhamento ortogonal do fogo. O fogo foi iniciado na posição (6,1) e a posição inicial do agente foi estabelecida aleatoriamente, resultando em (3,7).
-  * **Para o caso com a influência do vento**: com 70% de árvores saudáveis, 20% de espaços vazios e 10% de água, criando um ambiente variado com barreiras e refúgios. A principal diferença reside na regra de propagação do fogo: o vento está ativo (VENTO_ATIVO = true), direcionando a expansão do fogo estritamente para as direções ABAIXO e DIREITA. O fogo foi iniciado na posição (6,1) e o agente em (3,7), as mesmas posições iniciais utilizadas no Caso 2, permitindo uma comparação direta do impacto da regra de propagação.
+  * **Para o caso com a influência do vento**: com 70% de árvores saudáveis, 20% de espaços vazios e 10% de água, criando um ambiente variado com barreiras e refúgios. A principal diferença reside na regra de propagação do fogo: o vento está ativo (VENTO_ATIVO = true), direcionando a expansão do fogo estritamente para as direções ABAIXO e DIREITA. O fogo foi iniciado na posição (6,1) e o agente em (3,7), as mesmas posições iniciais utilizadas no caso anterior, permitindo uma comparação direta do impacto da regra de propagação.
   * **Para a segunda vida**:  99% de árvores saudáveis, 0% de espaços vazios e apenas 1% de água, resultando em um ambiente extremamente denso e propenso à rápida propagação do fogo, com apenas uma célula de água (localizada em (1,3)) como potencial refúgio. O fogo foi iniciado na posição (6,3) e o agente em (3,7).
     
 Ao final dos testes realizados e da análise do comportamento da simulação sob diferentes configurações, pode estabelecer algumas observações importantes sobre a dinâmica do fogo, o comportamento do agente e a performance geral do código.
 
-### Observações Gerais
+### 1. Observações Gerais
 
 Os três casos de teste (com e sem vento, e variando a composição do ambiente) demonstraram que:
 - As regras de propagação do fogo (ortogonal sem vento, direcional com vento) estão implementadas e funcionando conforme o esperado.
 - As mecânicas básicas da simulação, como permanência do fogo, interação com água e espaços vazios, estão corretas.
 - A composição do ambiente (densidade de árvores, quantidade e distribuição de água e espaços vazios) e o padrão de propagação do fogo (influenciado pelo vento) têm impacto direto e significativo na severidade do incêndio e nas chances de sobrevivência do agente.
 
-Os casos 1 e 2
 
-### Caso 3: Segunda Vida (Análise Crítica)
+### 1.1. Caso 3: Segunda Vida (Análise Crítica)
 
 A análise mais crítica surgiu do Caso 3, que expôs uma limitação na lógica de movimento do agente:
 - Mesmo com um mecanismo reativo de "fuga" ao encontrar fogo ("segunda vida"), o agente demonstrou ser ineficaz em cenários desafiadores com poucos refúgios.
 - A sobrevivência depende muito mais de sorte ou de configurações iniciais favoráveis do que de uma estratégia proativa e inteligente.
-- A observação de que a sobrevivência em um teste forçado ocorreu por coincidência na ordem de verificação das direções reforça a necessidade de uma IA mais robusta para o agente, priorizando áreas seguras (água) com base em distância.
+- A observação de que a sobrevivência em um teste forçado ocorreu por coincidência na ordem de verificação das direções reforça a necessidade de um algoritmo mais robusto par o agente, priorizando áreas seguras (água) com base em distância (algoritmo de Manhattan).
 
-### Performance e Escalabilidade
+### 2. Performance e Escalabilidade
 
-Realizamos uma análise assintótica detalhada para identificar possíveis gargalos. A complexidade do código, no pior caso, atinge O(n²), onde n é o número de iterações da simulação.
+Uma análise assintótica para identificar possíveis gargalos pode ser feita analisando cada uma das funções utilizadas
 
-#### Origem da Complexidade Quadrática
-A complexidade quadrática reside principalmente na função `buscarMelhorMovimento` dentro de `melhorMovimento.cpp`. Os fatores são:
-1. **Verificação Iterativa do Histórico de Movimentos:** O agente verifica se a célula candidata ao próximo movimento já foi visitada, percorrendo todo o histórico de posições.
-2. **Crescimento Linear do Histórico:** O vetor de posições cresce linearmente com o número de iterações.
-3. **Busca Linear Ineficiente:** A verificação no vetor é feita de forma linear.
+  * Na  módulo `melhorMovimento.cpp`, que cuida da movimentação do animal, a função principal é `buscarMelhorMovimento`. Em termos de complexidade de tempo, no pior caso, é `O(4 * k)`, onde `k` é o tamanho do histórico de posições visitadas (`caminhoPercorrido`). A cada direção ortogonal (4 direções), verifica-se se uma célula foi visitada, resultando em uma complexidade linear por iteração que se torna quadrática (`O(n^2)`) em `n` iterações. No melhor caso, com nenhuma célula visitada, a complexidade é `O(4)`. Quanto à complexidade de espaço, utiliza apenas `O(1)` para variáveis locais.
+
+  * No módulo `propagacaoFogo.cpp`, responsável pela propagação do fogo, a função `executarFogoIteracao` tem complexidade de tempo no pior caso de `O(m * 4)`, onde `m` é o tamanho da fila de células em chamas. Cada célula queimada propaga o fogo para até 4 células adjacentes. Em um cenário extremo, onde toda a matriz está em chamas, `m` atinge `O(linhas * colunas)` e, para `n` iterações, o custo total é `O(n * linhas * colunas)`. No melhor caso, com nenhuma célula em chamas, a complexidade é `O(1)`. O espaço necessário é proporcional a `O(m)` para a fila de fogo.
+
+  * O módulo `Simulador.cpp` é estruturado com um loop principal que pode executar até `MAX_ITERACOES` iterações. Por iteração, as principais funções contribuem para a complexidade de tempo total: `salvarMatrizComCaminhoIteracao` (`O(linhas * colunas)`), `aplicarUmidade` (`O(1)`), `buscarMelhorMovimento` (`O(n)`), `executarFogoIteracao` (`O(m * 4)`) e `verificarFogoSobreAnimal` (`O(4)`). Isso resulta em uma complexidade total de `O(MAX_ITERACOES * (linhas * colunas + n + m))`. A complexidade de espaço inclui `O(linhas * colunas)` para a matriz e `O(n)` para o histórico de posições (`caminhoPercorrido`).
+
+  * No módulo `leitorMatriz.cpp`, a função `carregarArquivo` preenche a matriz célula por célula, o que gera uma complexidade de tempo de `O(linhas * colunas)` e requer `O(linhas * colunas)` de espaço para armazená-la.
+
+  * Já no módulo `relatorio.cpp`, a função `salvarMatrizComCaminhoIteracao` apresenta complexidade de tempo de `O(linhas * colunas + k)`, sendo `O(linhas * colunas)` para copiar a matriz e `O(k)` para marcar o caminho. A complexidade de espaço é de `O(linhas * colunas)` para a cópia da matriz.
+
+| **Módulo**            | **Tempo (Pior Caso)**           | **Espaço (Pior Caso)**            |
+|------------------------|---------------------------------|------------------------------------|
+| `melhorMovimento.cpp` | O(n²)                          | O(1)                              |
+| `propagacaoFogo.cpp`  | O(n * linhas * colunas)        | O(linhas * colunas)               |
+| `Simulador.cpp`       | O(n * linhas * colunas)        | O(linhas * colunas + n)           |
+| `leitorMatriz.cpp`    | O(linhas * colunas)            | O(linhas * colunas)               |
+| `relatorio.cpp`       | O(n * linhas * colunas)        | O(linhas * colunas)               |
+
+**Legenda**:
+- **n**: Número de iterações (`MAX_ITERACOES`).
+- **linhas, colunas**: Dimensões da matriz.
+
+
+##### 2.2 Origem da Complexidade Quadrática
+A complexidade quadrática, $O(n^2)$, reside principalmente na função `buscarMelhorMovimento` dentro de `melhorMovimento.cpp`. Especificamente, ela surge da combinação de dois fatores:
+
+* **Verificação Iterativa do Histórico de Movimentos:** A cada passo de tempo da simulação (iteração), o agente tenta se mover. Para determinar um movimento válido e evitar retornar imediatamente a uma célula recém-visitada, o código verifica se a célula candidata para o próximo movimento já está presente no `vector<pair<int, int>> caminhoPercorrido`, que armazena todo o histórico de posições do agente.
+* **Crescimento Linear do Histórico:** O `caminhoPercorrido` cresce linearmente com o número de iterações. Após $k$ iterações, o vetor pode conter até $k$ posições.
+* **Busca Linear Ineficiente:** A verificação se uma posição já foi visitada é feita percorrendo *linearmente* todo o `caminhoPercorrido` atual.
+
+Portanto, em cada iteração $i$ (de 1 a $n$), a função `buscarMelhorMovimento` executa uma busca em um vetor de tamanho aproximadamente $i$. O custo total para a movimentação do agente ao longo de $n$ iterações é a soma dos custos de cada iteração:
+
+$$
+\sum_{i=1}^{n} O(i) = O\left(\sum_{i=1}^{n} i\right) = O\left(\frac{n(n+1)}{2}\right) = O(n^2)
+$$
+
+Esta busca linear dentro do loop de simulação é o principal contribuinte para a complexidade quadrática geral.
+
+Outros módulos como `propagacaoFogo.cpp` (Tempo $$O(n \times linhas \times colunas)$$, Espaço $O(linhas \times colunas)$) e a gravação de relatórios em `relatorio.cpp` (Tempo $O(n \times linhas \times colunas + n)$) também podem se tornar custosos para matrizes grandes, mas a dependência $O(n^2)$ do movimento do agente é um ponto crítico para o número de iterações.
 
 Cada iteração de `n` resulta em um custo acumulado de O(n²).
 
-#### Outros Pontos Críticos de Performance
-- **Propagação do Fogo:** Tempo O(n×linhas×colunas). Pode ser lento para matrizes grandes. **Solução:** Paralelismo com OpenMP.
-- **Geração de Relatórios:** Tempo O(n×linhas×colunas+n). **Oportunidade:** Gravação condicional, economizando processamento e I/O.
-
-### Oportunidades de Otimização
-
-1. **Movimentação do Agente:** Substituir busca linear no histórico por uma estrutura com busca O(1), como `std::unordered_set` ou matriz booleana.
-2. **Propagação do Fogo:** Explorar paralelismo para grades grandes.
-3. **Relatórios:** Implementar gravação condicional ou otimizar momentos cruciais.
-
-### Próximos Passos
+#### 3. Próximos Passos
 
 O projeto já estabelece uma base funcional para a simulação. As melhorias podem incluir:
 - Tornar o agente mais inteligente ao buscar por segurança com algoritmos como Manhattan.
 - Implementar as otimizações de performance para permitir simulações maiores e mais complexas.
-
-Sinta-se à vontade para explorar o código e contribuir com melhorias, especialmente nas áreas de IA e performance!
 
 ## :keyboard: Instalação e Configuração 
 
