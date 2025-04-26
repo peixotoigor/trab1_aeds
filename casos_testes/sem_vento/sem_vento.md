@@ -34,7 +34,7 @@ No qual resultou na matriz:
 1 1 0 1 1 1 4 4 1 0
 1 1 0 0 1 0 4 1 1 1
 ```
-Assim , posição inicial para o fogo foi linha 6 e coluna 1 (lembrando que o indice começa em 0).
+Assim , posição inicial para o fogo foi linha 6 e coluna 1 (lembrando que o índice começa em 0).
 Para facilitar a visualização, definiu-se as seguintes figuras para representar cada estado:
 
     * Espaço vazio (0): ⬜
@@ -43,7 +43,7 @@ Para facilitar a visualização, definiu-se as seguintes figuras para representa
     * Árvore saúdavel (3): 🪵
     * Água (4): 💧
 
-A cposição inicial do agente, representado por 🐒, foi estabelecido aleatoriamente, e encontrou-se na linha 3 e coluna 7. O ambiente de simulação inical (iteração 1) pode ser visualizado abaixo:
+A cposição inicial do agente, representado por 🐒, foi estabelecida aleatoriamente, e encontrou-se na linha 3 e coluna 7. O ambiente de simulação inical (iteração 1) pode ser visualizado abaixo:
 ```
 🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
 💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
@@ -99,3 +99,5 @@ No arquivo output.dat contém o mapeamento da propagação do fogo e do animal s
 🪵 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🪵 🪵 🪵 
 
 ```
+
+Em análise verifica-se que as regras de propagação estão sendo realizadas de forma esperada, assim como do agente. 
