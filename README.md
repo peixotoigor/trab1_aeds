@@ -314,9 +314,11 @@ arquivoSaida.close();
 
 ##  :test_tube:  Casos de teste 
 Para verificar o comportamento da simulação foram testados os seguintes casos
-  * [Propagação sem a influência do vento]()
-  * [Propagação com a influência do vento]()
-  * [Segunda chance]()
+  * [Propagação sem a influência do vento](casos_testes/sem_vento)
+  * [Propagação com a influência do vento](casos_testes/com_vento)
+  * [Segunda chance](casos_testes/sem_vida)
+
+## Análises e Conclusões
 
 
 ## :keyboard: Instalação e Configuração 
