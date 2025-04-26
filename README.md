@@ -315,7 +315,7 @@ arquivoSaida.close();
 ##  :test_tube:  Casos de teste 
 Para verificar o comportamento da simulação foram testados os seguintes casos
   * [Propagação sem a influência do vento](casos_testes/sem_vento)
-  * [Propagação com a influência do vento](casos_testes/com_vento)
+  * [Propagação com a influência do vento]((https://github.com/peixotoigor/trab1_aeds/tree/9f4f57dccbeb5a4d023d5c0185512ebec382c625/casos_testes/com_vento)
   * [Segunda chance](casos_testes/sem_vida)
 
 ## Análises e Conclusões
