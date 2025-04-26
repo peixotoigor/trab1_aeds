@@ -41,7 +41,7 @@ Para facilitar a visualização, definiu-se as seguintes figuras para representa
     * Árvore saúdavel (3): 🪵
     * Água (4): 💧
 
-A cposição inicial do agente foi linha 3 e coluna 7. O ambiente de simulação inical pode ser visualizado abaixo:
+A cposição inicial do agente, representado por 🐒, foi estabelecido aleatoriamente, e encontrou-se na linha 3 e coluna 7. O ambiente de simulação inical (iteração 1) pode ser visualizado abaixo:
 ```
 🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
 💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
@@ -53,4 +53,47 @@ A cposição inicial do agente foi linha 3 e coluna 7. O ambiente de simulação
 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 🌳 
 🌳 🌳 ⬜ 🌳 🌳 🌳 💧 💧 🌳 ⬜ 
 🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳 
+```
+Na iteração 2, pode-se verificar o o fogo se espalhando nas direções ortognais e respeitando as regras de simualçao:
+```
+🌳 🌳 🌳 ⬜ 🌳 ⬜ 🌳 🌳 💧 🌳 
+💧 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 💧 💧 
+🌳 🌳 🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 
+🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 🐒 💧 🌳 
+🌳 🌳 🌳 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 
+⬜ ⬜ 🌳 ⬜ 🌳 🌳 ⬜ 🌳 🌳 🌳 
+🔥 🪵 🔥 ⬜ 🌳 🌳 ⬜ ⬜ 🌳 🌳 
+🌳 🔥 🌳 🌳 ⬜ 🌳 🌳 💧 🌳 🌳 
+🌳 🌳 ⬜ 🌳 🌳 🌳 💧 💧 🌳 ⬜ 
+🌳 🌳 ⬜ ⬜ 🌳 ⬜ 💧 🌳 🌳 🌳 
+```
+
+No arquivo output.dat contém o mapeamento da propagação do fogo e do animal separadamente, afim de melhor compreender a dinâmica da simulação. Verifica-se que após 20 iterações o fogo consome as regiões disponíveis e o animal sobrevive, indo para uma região que possui água. A restauração da área consumida pelo fogo (aplicação da umidade) é realizada com sucesso. O Caminho percorrido pelo animal: (3,7)(3,8)(4,8)(5,8)(6,8)(6,7)(7,7).
+
+```
+--- Iteracao 20 ---
+ --- Posição Animal  ---
+🪵 🪵 🪵 ⬜ 🪵 ⬜ 🌳 🌳 💧 🌳 
+💧 🪵 🪵 🪵 🪵 🪵 ⬜ 🌳 💧 💧 
+🪵 🪵 🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🐒 🐒 🪵 
+🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🐒 🪵 
+⬜ ⬜ 🪵 ⬜ 🪵 🪵 ⬜ 🪵 🐒 🪵 
+🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🐒 🐒 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🌳 🐒 🌳 🪵 
+🪵 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🪵 ⬜ 
+🪵 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🪵 🪵 🪵 
+
+ --- Posição Fogo  ---
+🪵 🪵 🪵 ⬜ 🪵 ⬜ 🌳 🌳 💧 🌳 
+💧 🪵 🪵 🪵 🪵 🪵 ⬜ 🌳 💧 💧 
+🪵 🪵 🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 🪵 🪵 🪵 
+🪵 🪵 🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🪵 
+⬜ ⬜ 🪵 ⬜ 🪵 🪵 ⬜ 🪵 🪵 🪵 
+🪵 🪵 🪵 ⬜ 🪵 🪵 ⬜ 🌳 🪵 🪵 
+🪵 🪵 🪵 🪵 ⬜ 🪵 🌳 ⬜ 🌳 🪵 
+🪵 🪵 ⬜ 🪵 🪵 🪵 💧 💧 🪵 ⬜ 
+🪵 🪵 ⬜ ⬜ 🪵 ⬜ 💧 🪵 🪵 🪵 
+
 ```
