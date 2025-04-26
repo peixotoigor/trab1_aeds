@@ -482,7 +482,10 @@ Ajuste os parâmetros globais no arquivo `config.hpp`, como:
 
 
 ## :busts_in_silhouette: Desenvolvedores do Projeto
-[<img loading="lazy" src="https://avatars.githubusercontent.com/u/106671313" width=115><br><sub>Igor Peixoto</sub>](https://github.com/peixotoigor)
+Se tiver interesse em discutir mais sobre este projeto, sinta-se à vontade para entrar em contato. Será um prazer trocar ideias e explorar possibilidades juntos!
+
+[<img loading="lazy" src="https://avatars.githubusercontent.com/u/106671313" width=115><br><sub>Igor Peixoto</sub>](https://github.com/peixotoigor)  
+[LinkedIn](https://www.linkedin.com/in/peixotoigor/)
 
 ## :computer: Ambiente de teste
 Este projeto foi executado utilizando:
