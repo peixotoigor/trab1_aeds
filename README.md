@@ -320,6 +320,59 @@ Para verificar o comportamento da simulação foram testados os seguintes casos
 
 ## 💬🎯 Análises e Conclusões
 
+Os testes realizados envolveram uma simulação de incêndio florestal, na qual um agente (representado por 🐒) tenta sobreviver à propagação do fogo (🔥). As simulações foram conduzidas em uma matriz 10x10 composta por diferentes tipos de células: árvores saudáveis (🌳), que são inflamáveis; espaços vazios (⬜), que não propagam o fogo; água (💧), que serve como refúgio e barreira contra o fogo; e madeira queimada (🪵), resultado de uma árvore que já foi consumida pelas chamas e "apagou". As configurações das matrizes foram as seguintes:
+
+  * **Para o caso sem a influência do vento**:  com 70% de árvores saudáveis, 20% de espaços vazios e 10% de água. Essa distribuição resultou em um ambiente mais heterogêneo e com menor concentração de material combustível contínuo, com os espaços vazios atuando como barreiras naturais e as áreas de água distribuídas oferecendo múltiplos potenciais refúgios para o agente. A configuração de propagação permaneceu sem vento (VENTO_ATIVO = false), implicando em espalhamento ortogonal do fogo. O fogo foi iniciado na posição (6,1) e a posição inicial do agente foi estabelecida aleatoriamente, resultando em (3,7).
+  * **Para o caso com a influência do vento**: com 70% de árvores saudáveis, 20% de espaços vazios e 10% de água, criando um ambiente variado com barreiras e refúgios. A principal diferença reside na regra de propagação do fogo: o vento está ativo (VENTO_ATIVO = true), direcionando a expansão do fogo estritamente para as direções ABAIXO e DIREITA. O fogo foi iniciado na posição (6,1) e o agente em (3,7), as mesmas posições iniciais utilizadas no Caso 2, permitindo uma comparação direta do impacto da regra de propagação.
+  * **Para a segunda vida**:  99% de árvores saudáveis, 0% de espaços vazios e apenas 1% de água, resultando em um ambiente extremamente denso e propenso à rápida propagação do fogo, com apenas uma célula de água (localizada em (1,3)) como potencial refúgio. O fogo foi iniciado na posição (6,3) e o agente em (3,7).
+    
+Ao final dos testes realizados e da análise do comportamento da simulação sob diferentes configurações, pode estabelecer algumas observações importantes sobre a dinâmica do fogo, o comportamento do agente e a performance geral do código.
+
+### Observações Gerais
+
+Os três casos de teste (com e sem vento, e variando a composição do ambiente) demonstraram que:
+- As regras de propagação do fogo (ortogonal sem vento, direcional com vento) estão implementadas e funcionando conforme o esperado.
+- As mecânicas básicas da simulação, como permanência do fogo, interação com água e espaços vazios, estão corretas.
+- A composição do ambiente (densidade de árvores, quantidade e distribuição de água e espaços vazios) e o padrão de propagação do fogo (influenciado pelo vento) têm impacto direto e significativo na severidade do incêndio e nas chances de sobrevivência do agente.
+
+Os casos 1 e 2
+
+### Caso 3: Segunda Vida (Análise Crítica)
+
+A análise mais crítica surgiu do Caso 3, que expôs uma limitação na lógica de movimento do agente:
+- Mesmo com um mecanismo reativo de "fuga" ao encontrar fogo ("segunda vida"), o agente demonstrou ser ineficaz em cenários desafiadores com poucos refúgios.
+- A sobrevivência depende muito mais de sorte ou de configurações iniciais favoráveis do que de uma estratégia proativa e inteligente.
+- A observação de que a sobrevivência em um teste forçado ocorreu por coincidência na ordem de verificação das direções reforça a necessidade de uma IA mais robusta para o agente, priorizando áreas seguras (água) com base em distância.
+
+### Performance e Escalabilidade
+
+Realizamos uma análise assintótica detalhada para identificar possíveis gargalos. A complexidade do código, no pior caso, atinge O(n²), onde n é o número de iterações da simulação.
+
+#### Origem da Complexidade Quadrática
+A complexidade quadrática reside principalmente na função `buscarMelhorMovimento` dentro de `melhorMovimento.cpp`. Os fatores são:
+1. **Verificação Iterativa do Histórico de Movimentos:** O agente verifica se a célula candidata ao próximo movimento já foi visitada, percorrendo todo o histórico de posições.
+2. **Crescimento Linear do Histórico:** O vetor de posições cresce linearmente com o número de iterações.
+3. **Busca Linear Ineficiente:** A verificação no vetor é feita de forma linear.
+
+Cada iteração de `n` resulta em um custo acumulado de O(n²).
+
+#### Outros Pontos Críticos de Performance
+- **Propagação do Fogo:** Tempo O(n×linhas×colunas). Pode ser lento para matrizes grandes. **Solução:** Paralelismo com OpenMP.
+- **Geração de Relatórios:** Tempo O(n×linhas×colunas+n). **Oportunidade:** Gravação condicional, economizando processamento e I/O.
+
+### Oportunidades de Otimização
+
+1. **Movimentação do Agente:** Substituir busca linear no histórico por uma estrutura com busca O(1), como `std::unordered_set` ou matriz booleana.
+2. **Propagação do Fogo:** Explorar paralelismo para grades grandes.
+3. **Relatórios:** Implementar gravação condicional ou otimizar momentos cruciais.
+
+### Próximos Passos
+
+O projeto já estabelece uma base funcional para a simulação. As melhorias podem incluir:
+- Tornar o agente mais inteligente ao buscar por segurança com algoritmos como Manhattan.
+- Implementar as otimizações de performance para permitir simulações maiores e mais complexas.
+
+Sinta-se à vontade para explorar o código e contribuir com melhorias, especialmente nas áreas de IA e performance!
 
 ## :keyboard: Instalação e Configuração 
 
