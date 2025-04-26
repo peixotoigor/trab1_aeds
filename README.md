@@ -181,6 +181,18 @@ Antes de iniciar a simulação, é necessário configurar os parâmetros globais
 #### Limites Operacionais:
   * MAX_ITERACOES: Define o número máximo de iterações permitidas (100 por padrão), evitando execuções infinitas e controlando o tempo de simulação.
   * MAX_PERMANENCIA: Especifica quantas iterações o animal pode permanecer em uma célula segura ('0') antes de ser obrigado a se mover (3 por padrão), equilibrando estratégia de sobrevivência e dinâmica do ambiente.
+  *  MAX_VIDA: Especifica quantas vidas o agente pode ter durante a simulação.
+```cpp
+// Número máximo de iterações
+const int MAX_ITERACOES = 1000;
+
+// Número máximo de permanência
+const int MAX_PERMANENCIA = 3;
+
+// Número máximo de vidas
+const int MAX_VIDAS = 1;
+
+```
 
 #### Mapeamento de Direções:
 DIRECOES_VENTO: Associa cada elemento do enum DIRECOES a um deslocamento concreto na matriz (variação de linhas e colunas):
@@ -196,6 +208,9 @@ DIRECOES_VENTO: Associa cada elemento do enum DIRECOES a um deslocamento concret
   * DIRECOES (Enumeração): Lista direções possíveis para o vento:
 
 ```cpp
+// Ativar ou desativar o ventgo
+const bool VENTO_ATIVO = true;
+
 // Variável para definir as direções do vento (pode conter várias direções)
 const std::vector<DIRECOES> VENTO_DIRECOES = VENTO_ATIVO 
     ? std::vector<DIRECOES>{ABAIXO, DIREITA} // Direções configuradas quando o vento está ativo
