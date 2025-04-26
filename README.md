@@ -114,39 +114,45 @@ O código foi desenvolvido utilizando as seguintes ferramentas:
 A estrutura do projeto é disposto da seguinte maneira:
 
 ```markdown
-trab1_aeds/
-├── Makefile                # Script para compilar o projeto (build automático)
-├── README.md               # Descrição geral do projeto e instruções de uso
-├── build/                  # Diretório para arquivos binários/compilados
-│   └── app                 # Executável principal gerado pela compilação
-├── data/                   # Arquivos de dados de entrada e saída
-│   ├── geradorMatriz.py    # Script Python para gerar matrizes de teste
-│   ├── input.dat           # Arquivo de entrada padrão para a simulação
-│   ├── matriz.dat          # Matriz gerada pelo script Python
-│   ├── log.dat             # Log de execução da simulação
-│   └── output.dat           # Saída final da simulação (resultados)
-├── include/                # Arquivos de cabeçalho (headers) do projeto
-│   ├── Simulador.hpp           # Declaração da classe/função principal da simulação
-│   ├── config.hpp              # Configurações e constantes globais
-│   ├── conferirFogo.hpp        # Funções para checar o fogo na matriz
-│   ├── leitorMatriz.hpp        # Leitura de arquivos de matriz
-│   ├── melhorMovimento.hpp     # Lógica de movimentação do animal
-│   ├── numAleatorio.hpp        # Funções para geração de números aleatórios
-│   ├── propagacaoFogo.hpp      # Lógica de propagação do fogo
-│   ├── relatorio.hpp           # Funções para geração de relatórios
-│   └── umidade.hpp             # Funções relacionadas à umidade/água
-├── src/                    # Código-fonte principal do projeto
-│   ├── Simulador.cpp           # Implementação da simulação principal
-│   ├── conferirFogo.cpp        # Implementação das funções de fogo
-│   ├── leitorMatriz.cpp        # Implementação da leitura de matriz
-│   ├── main.cpp                # Função principal (main)
-│   ├── melhorMovimento.cpp     # Implementação do movimento do animal
-│   ├── numAleatorio.cpp        # Implementação dos números aleatórios
-│   ├── propagacaoFogo.cpp      # Implementação da propagação do fogo
-│   ├── relatorio.cpp           # Implementação dos relatórios
-│   ├── umidade.cpp             # Implementação da lógica de umidade
-└── .vscode/                # Configurações do Visual Studio Code
-    └── settings.json           # Configurações específicas do projeto
+vtrab1_aeds/
+├── Makefile                   # Script para compilar o projeto (build automático)
+├── README.md                  # Descrição geral do projeto e instruções de uso
+├── build/                     # Diretório para arquivos binários/compilados
+│   └── app                    # Executável principal gerado pela compilação
+├── data/                      # Arquivos de dados de entrada e saída
+│   ├── geradorMatriz.py       # Script Python para gerar matrizes de teste
+│   ├── input.dat              # Arquivo de entrada padrão para a simulação
+│   ├── log.dat                # Log de execução da simulação
+│   └── output.dat             # Saída final da simulação (resultados)
+├── casos_testes/              # Casos de teste documentados
+│   ├── sem_vento/
+│   │   └── sem_vento.md       # Documentação e exemplos sem vento
+│   └── com_vento/
+│       └── com_vento.md       # Documentação e exemplos com vento
+│   └── sem_vida/
+│       └── sem_vida.md        # Documentação e exemplos csegunda chance
+├── include/                   # Arquivos de cabeçalho (headers) do projeto
+│   ├── Simulador.hpp              # Declaração da classe/função principal da simulação
+│   ├── config.hpp                 # Configurações e constantes globais
+│   ├── conferirFogo.hpp           # Funções para checar o fogo na matriz
+│   ├── leitorMatriz.hpp           # Leitura de arquivos de matriz
+│   ├── melhorMovimento.hpp        # Lógica de movimentação do animal
+│   ├── numAleatorio.hpp           # Funções para geração de números aleatórios
+│   ├── propagacaoFogo.hpp         # Lógica de propagação do fogo
+│   ├── relatorio.hpp              # Funções para geração de relatórios
+│   └── umidade.hpp                # Funções relacionadas à umidade/água
+├── src/                         # Código-fonte principal do projeto
+│   ├── Simulador.cpp                # Implementação da simulação principal
+│   ├── conferirFogo.cpp             # Implementação das funções de fogo
+│   ├── leitorMatriz.cpp             # Implementação da leitura de matriz
+│   ├── main.cpp                     # Função principal (main)
+│   ├── melhorMovimento.cpp          # Implementação do movimento do animal
+│   ├── numAleatorio.cpp             # Implementação dos números aleatórios
+│   ├── propagacaoFogo.cpp           # Implementação da propagação do fogo
+│   ├── relatorio.cpp                # Implementação dos relatórios
+│   └── umidade.cpp                  # Implementação da lógica de umidade
+└── .vscode/                     # Configurações do Visual Studio Code
+    └── settings.json                # Configurações específicas do projeto
 ```
 
 ## :man_technologist: Implementação
