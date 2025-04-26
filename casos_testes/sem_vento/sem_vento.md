@@ -34,6 +34,7 @@ No qual resultou na matriz:
 ```
 
 Para facilitar a visualização, definiu-se as seguintes figuras para representar cada estado:
+    
     * Espaço vazio (0): ⬜
     * Árvore saúdavel (1): 🌳 
     * Incêndio (2): 🔥
